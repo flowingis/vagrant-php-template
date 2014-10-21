@@ -1,0 +1,8 @@
+### Vagrant template
+.vagrant
+
+### PHP Storm
+.idea
+
+### Other
+html
