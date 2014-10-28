@@ -107,3 +107,10 @@
 
 - name: Copy phpunit to bin dir
   command: ln -s /home/vagrant/.composer/vendor/bin/phpunit /usr/bin/phpunit
+
+- name: Install phpmyadmin
+  apt: pkg=phpmyadmin state=present
+
+- name: Include phpmyadmin config file into Apache config file
+  lineinfile: dest=/etc/apache2/apache2.conf line="Include /etc/phpmyadmin/apache.conf"
+  notify: restart apache
