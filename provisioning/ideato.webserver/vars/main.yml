@@ -7,4 +7,6 @@ virtual_host: ideato.dev
 server_name_virtual_host: ideato2.dev
 application_root_dir: /var/www/ideato
 
-php_ppa: php5
+php_ppa_54: php5-oldstable
+php_ppa_55: php5
+

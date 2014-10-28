@@ -5,7 +5,12 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "ubuntu/trusty64"
+
+  # ubuntu 14.04 LTS
+  #config.vm.box = "ubuntu/trusty64"
+  # ubuntu 12.04 LTS
+  config.vm.box = "ubuntu/precise64"
+
   config.vm.network "private_network", ip: "10.10.10.10"
 
   config.ssh.forward_agent = true

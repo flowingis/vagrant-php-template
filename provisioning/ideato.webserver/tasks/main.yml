@@ -13,9 +13,15 @@
   command: a2ensite {{ virtual_host }}.conf
   notify: restart apache
 
-#php
-- name: add php5 ppa
-  apt_repository: repo=ppa:ondrej/{{ php_ppa }}
+#php54
+- name: add php54 ppa
+  apt_repository: repo=ppa:ondrej/{{ php_ppa_54 }}
+  when: ansible_distribution_release == "precise"
+
+#php55
+- name: add php55 ppa
+  apt_repository: repo=ppa:ondrej/{{ php_ppa_55 }}
+  when: ansible_distribution_release == "trusty"
 
 #apt update
 - name: Update apt
