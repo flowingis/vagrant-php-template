@@ -64,12 +64,12 @@
 - apache2_module: state=present name=rewrite
 - apache2_module: state=present name=env
 
-#- name: update apache env variables
-#  replace: dest=/etc/apache2/envvars regexp='www-data' replace='vagrant' backup=yes
+- name: update apache env variables
+  replace: dest=/etc/apache2/envvars regexp='www-data' replace='vagrant' backup=yes
 
-#- file: path=/var/lock/apache2 owner=vagrant group=vagrant
-#  notify: restart apache
-#
+- file: path=/var/lock/apache2 owner=vagrant group=vagrant
+  notify: restart apache
+
 - name: Install composer
   shell: chdir=/tmp creates=/tmp/composer.phar curl -sS https://getcomposer.org/installer | php
 
