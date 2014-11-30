@@ -108,6 +108,13 @@
 - name: Copy phpunit to bin dir
   command: ln -s /home/vagrant/.composer/vendor/bin/phpunit /usr/bin/phpunit
 
+- name: Install php-cs-fixer
+  shell: composer global require "fabpot/php-cs-fixer" --no-interaction chdir=/home/vagrant/
+  sudo_user: vagrant
+
+- name: Copy php-cs-fixer to bin dir
+  command: ln -s /home/vagrant/.composer/vendor/bin/php-cs-fixer /usr/bin/php-cs-fixer
+
 - name: Install phpmyadmin
   apt: pkg=phpmyadmin state=present
 
