@@ -8,3 +8,22 @@
   with_items:
     - git
     - curl
+    - zsh
+
+- name: Create conf folder in home directory
+  file: path=/home/vagrant/conf/ state=directory owner=vagrant
+
+- name: Clone oh-my-zsh repo
+  git: repo=https://github.com/robbyrussell/oh-my-zsh.git dest=/home/vagrant/.oh-my-zsh
+
+- name: deploy .zshrc
+  template: src=zshrc.ini dest=/home/vagrant/conf/zshrc owner=vagrant
+
+- name: remove standard zshrc
+  file: path=/home/vagrant/.zshrc state=absent
+
+- name: symlink zshrc
+  file: path=/home/vagrant/.zshrc src=/home/vagrant/conf/zshrc state=link owner=vagrant
+
+- name: Set zsh as default shell
+  user: name=vagrant shell=/usr/bin/zsh

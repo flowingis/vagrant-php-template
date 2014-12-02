@@ -14,6 +14,7 @@ Usage
 - run "vagrant up"
 - To use phpmyadmin go to: http://10.10.10.10/phpmyadmin
 
+
 This configuration install:
 - php 5.5.x
 - phpunit 4.3
@@ -22,3 +23,4 @@ This configuration install:
 - idephix (latest)
 - apache 2.4.x
 - mysql 5.5.x
+- zsh and oh-my-zsh
