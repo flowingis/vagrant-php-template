@@ -5,12 +5,12 @@
   apt: name=apache2 state=present
 
 - name: create virtual host
-  template: src=apache/{{ virtual_host }}.j2
-        dest=/etc/apache2/sites-available/{{ virtual_host }}.conf
+  template: src=apache/virtual_host.j2
+        dest=/etc/apache2/sites-available/virtual_host.conf
         owner=root group=root mode=644 backup=yes
 
 - name: enable development site
-  command: a2ensite {{ virtual_host }}.conf
+  command: a2ensite virtual_host.conf
   notify: restart apache
 
 #php54

@@ -3,7 +3,6 @@
 #customize apache and virtual host
 apache_user: vagrant
 apache_root_dir: /var/www
-virtual_host: ideato.dev
 server_name_virtual_host: ideato2.dev
 application_root_dir: /var/www/ideato
 
