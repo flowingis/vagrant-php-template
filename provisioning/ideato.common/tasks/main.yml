@@ -15,15 +15,27 @@
 
 - name: Clone oh-my-zsh repo
   git: repo=https://github.com/robbyrussell/oh-my-zsh.git dest=/home/vagrant/.oh-my-zsh
+  register: zsh_repo
+  ignore_errors: yes
 
-- name: deploy .zshrc
+- name: Install .zshrc
   template: src=zshrc.ini dest=/home/vagrant/conf/zshrc owner=vagrant
+  when: zsh_repo > 0
 
 - name: remove standard zshrc
   file: path=/home/vagrant/.zshrc state=absent
+  when: zsh_repo > 0
 
 - name: symlink zshrc
   file: path=/home/vagrant/.zshrc src=/home/vagrant/conf/zshrc state=link owner=vagrant
+  when: zsh_repo > 0
 
 - name: Set zsh as default shell
   user: name=vagrant shell=/usr/bin/zsh
+  when: zsh_repo > 0
+
+- debug: var=zsh_repo
+
+- name: Zsh failed message
+  debug: msg="Zsh failed because repo is not reachable - {{ zsh_repo }}"
+  when: ansible_default_ipv4.gateway is defined
