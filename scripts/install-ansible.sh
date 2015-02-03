@@ -1,6 +1,10 @@
 #!/bin/bash
 
 sudo apt-get update
+# NFS improve caching
+sudo apt-get install cachefilesd
+sudo echo "RUN=yes" > /etc/default/cachefilesd
+sudo service cachefilesd start
 sudo apt-get install -y python-pip python-dev python-pycurl
 sudo pip install ansible
 
