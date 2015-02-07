@@ -1,6 +1,6 @@
 ### Vagrant template
 .vagrant
-Vagrantfile
+vagrantconfig.yml
 
 ### PHP Storm
 .idea
