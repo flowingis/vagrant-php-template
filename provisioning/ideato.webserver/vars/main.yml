@@ -3,7 +3,7 @@
 #customize apache and virtual host
 apache_user: vagrant
 server_name_virtual_host: ideato2.dev
-application_root_dir: /var/www/ideato
+application_root_dir: /var/www
 
 php_ppa_54: php5-oldstable
 php_ppa_55: php5
