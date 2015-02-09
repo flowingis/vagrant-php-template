@@ -8,9 +8,10 @@ Usage
 
 - clone repo
 - insert your mysql info into provisioning/ideato.database.mysql/vars/main.yml
-- insert apachre and virtual host info into provisioning/ideato.webserver/vars/main.yml
-- if you want precise64 with php 5.4 copy Vagrantfile.php54.dist in Vagrantfile
-- if you want trusty64 with php 5.5 copy Vagrantfile.php55.dist in Vagrantfile
+- insert apache and virtual host info into provisioning/ideato.webserver/vars/main.yml
+- copy vagrantconfig.dist.yml in vagrantconfig.yml
+- customize vagrantconfig.yml to your needs
+(use ubuntu/precise64 as box for php 5.4 or ubuntu/trusty64 for php5.5)
 - run "vagrant up"
 - To use phpmyadmin go to: http://10.10.10.10/phpmyadmin
 
