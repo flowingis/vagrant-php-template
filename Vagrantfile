@@ -10,8 +10,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  # ubuntu 12.04 LTS
-  config.vm.box = CONF["box"]
+  config.vm.box = ubuntu/precise64
 
   config.vm.network "private_network", ip: CONF["ipaddress"]
 
