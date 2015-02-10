@@ -1,4 +1,3 @@
-box:        ubuntu/precise64
 ram:        2048
 cpus:       2
 ipaddress:  10.10.10.10
