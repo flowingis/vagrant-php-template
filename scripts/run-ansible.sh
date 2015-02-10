@@ -1,5 +1,5 @@
 #!/bin/bash
 
 echo Running ansible playbooks as local
-ansible-playbook /var/www/provisioning/playbooks.yml -i /var/www/provisioning/hosts.ini --connection=local
+ansible-playbook $1/provisioning/playbooks.yml -i $1/provisioning/hosts.ini --connection=local
 

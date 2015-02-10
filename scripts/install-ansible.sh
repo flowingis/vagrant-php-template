@@ -31,7 +31,7 @@ fi
 
 printf '**************************\n\n'
 printf 'Removes executable permission on hosts.ini to avoid ansible evalute this inventory like external scritp'
-chmod -x /var/www/provisioning/hosts.ini
+chmod -x $1/provisioning/hosts.ini
 printf '**************************\n\n'
 
 
