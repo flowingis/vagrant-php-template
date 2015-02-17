@@ -9,6 +9,7 @@
     - git
     - curl
     - zsh
+    - vim
 
 - name: Create conf folder in home directory
   file: path=/home/vagrant/conf/ state=directory owner=vagrant
