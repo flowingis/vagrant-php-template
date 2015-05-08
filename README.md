@@ -24,4 +24,3 @@ This configuration install:
 - idephix (latest)
 - apache 2.4.x
 - mysql 5.5.x
-- zsh and oh-my-zsh
