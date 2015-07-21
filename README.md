@@ -11,13 +11,24 @@ Usage
 - insert apache and virtual host info into provisioning/ideato.webserver/vars/main.yml
 - copy vagrantconfig.dist.yml in vagrantconfig.yml
 - customize vagrantconfig.yml to your needs
-(use hashicorp/precise64 as box for php 5.4 or ubuntu/trusty64 for php5.5)
+(use hashicorp/precise64 as box for php 5.4 or ubuntu/trusty64 for php5.5 or php5.6)
 - run "vagrant up"
 - To use phpmyadmin go to: http://10.10.10.10/phpmyadmin
 
+## Choose the PHP version
+
+To install php5.4: 
+
+- choose hashicorp/precise64 as box 
+    
+To install php5.5 or php5.6:
+
+- choose ubuntu/trusty64 as box
+- choose the php version ppa in provisioning/ideato.webserver/vars/main.yml
+
 
 This configuration install:
-- php 5.5.x
+- php 5.x
 - phpunit 4.3
 - composer (latest)
 - phing (latest)

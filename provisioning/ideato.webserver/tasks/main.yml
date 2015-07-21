@@ -19,8 +19,8 @@
   when: ansible_distribution_release == "precise"
 
 #php55
-- name: add php55 ppa
-  apt_repository: repo=ppa:ondrej/{{ php_ppa_55 }}
+- name: add php55 or php56 ppa
+  apt_repository: repo=ppa:ondrej/{{ php_ppa }}
   when: ansible_distribution_release == "trusty"
 
 #apt update
