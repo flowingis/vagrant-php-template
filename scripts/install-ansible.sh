@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export DEBIAN_FRONTEND=noninteractive
+export PYTHONUNBUFFERED=1
+
 sudo apt-get update
 
 printf '**************************\n\n'
