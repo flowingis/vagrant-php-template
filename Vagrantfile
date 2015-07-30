@@ -11,7 +11,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "ubuntu/trusty64"
-
+  config.vm.hostname = CONF["name"]
   config.vm.network "private_network", ip: CONF["ipaddress"]
 
   config.ssh.forward_agent = true
@@ -21,7 +21,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", CONF["ram"]]
     vb.customize ["modifyvm", :id, "--cpus", CONF["cpus"]]
-    vb.customize ["modifyvm", :id, "--name", CONF["name"]]
   end
 
   config.vm.provision :shell, :path => "scripts/install-ansible.sh", :args => "/var/www"
