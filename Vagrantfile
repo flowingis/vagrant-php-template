@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_agent = true
 
   unless Vagrant.has_plugin?("vagrant-hostsupdater")
-    raise 'vagrant-hostsupdater plugin not installed, ran "vagrant plugin install vagrant-hostsupdater"'
+    raise 'vagrant-hostsupdater plugin not installed, run "vagrant plugin install vagrant-hostsupdater"'
   end
 
   config.hostsupdater.remove_on_suspend = true
