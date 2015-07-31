@@ -15,6 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.network "private_network", ip: CONF["ipaddress"]
 
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
   config.ssh.forward_agent = true
 
   unless Vagrant.has_plugin?("vagrant-hostsupdater")
