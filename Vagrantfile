@@ -12,9 +12,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = CONF["name"]
+
   config.vm.network "private_network", ip: CONF["ipaddress"]
 
   config.ssh.forward_agent = true
+
+  unless Vagrant.has_plugin?("vagrant-hostsupdater")
+    raise 'vagrant-hostsupdater plugin not installed, run "vagrant plugin install vagrant-hostsupdater"'
+  end
+
+  config.hostsupdater.remove_on_suspend = true
+  config.hostsupdater.aliases = [
+    CONF["name"],
+  ]
 
   config.vm.synced_folder "./", "/var/www", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc']
 
