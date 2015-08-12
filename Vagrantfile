@@ -33,6 +33,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--memory", CONF["ram"]]
     vb.customize ["modifyvm", :id, "--cpus", CONF["cpus"]]
   end
+  
+  config.vm.provider "vmware_fusion" do |v|
+    v.vmx["memsize"] = CONF["ram"]
+    v.vmx["numvcpus"] = CONF["cpus"]
+  end
 
   config.vm.provision :shell, :path => "scripts/install-ansible.sh", :args => "/var/www"
   config.vm.provision :shell, :path => "scripts/run-ansible.sh", :args => "/var/www"
