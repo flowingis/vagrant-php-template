@@ -8,6 +8,13 @@
   template: src=apache/virtual_host.j2
         dest=/etc/apache2/sites-available/virtual_host.conf
         owner=root group=root mode=644 backup=yes
+  when: ansible_distribution_release == "precise"
+
+- name: create virtual host24
+  template: src=apache/virtual_host24.j2
+        dest=/etc/apache2/sites-available/virtual_host.conf
+        owner=root group=root mode=644 backup=yes
+  when: ansible_distribution_release == "trusty"
 
 - name: enable development site
   command: a2ensite virtual_host.conf
