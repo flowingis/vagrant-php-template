@@ -72,7 +72,7 @@
 - apache2_module: state=present name=env
 
 - name: update apache env variables
-  replace: dest=/etc/apache2/envvars regexp='www-data' replace='vagrant' backup=yes
+  replace: dest=/etc/apache2/envvars regexp='www-data' replace={{ apache_user }} backup=yes
 
 - file: path=/var/lock/apache2 owner=vagrant group=vagrant
   notify: restart apache

@@ -1,0 +1,50 @@
+- name: MySQL | package requirements
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+  - mysql-server
+  - mysql-client
+
+- name: MySQL | Ensure MySQL is running
+  service:
+    name: mysql
+    state: started
+
+- name: MySQL | Update the my.cnf
+  template:
+    src: my.cnf.j2
+    dest: /etc/my.cnf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart mysql
+
+- name: MySQL | Set the root password.
+  mysql_user:
+    user: root
+    host: "{{item}}"
+    password: "{{mysql_root_password}}"
+  with_items:
+   - "{{ansible_hostname}}"
+   - 127.0.0.1
+   - ::1
+   - localhost
+  when: ansible_hostname != 'localhost'
+
+- name: MySQL | Configure MySql for easy access as root user
+  template:
+    src: root_dot_my.cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: 0600
+
+- name: MySQL | Remove the MySQL test database
+  mysql_db:
+    name: test
+    state: absent
+
+
+
+
+

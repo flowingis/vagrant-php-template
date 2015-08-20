@@ -1,0 +1,23 @@
+-
+ name: Package requirements
+ apt: name={{ item }} state=present update_cache=yes
+ with_items:
+  - wget
+  - curl
+  - unzip
+  - python
+  - python-setuptools
+  - apache2
+  - tar
+  - build-essential
+  - vim
+  - fail2ban
+  - git
+  - dnsutils
+  - locate
+  - bind9
+  - dnsutils
+  - dstat
+  - htop
+  - iftop
+  - rsync

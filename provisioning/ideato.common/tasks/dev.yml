@@ -1,0 +1,14 @@
+---
+
+- name: copy all dotfiles to vagrant home
+  copy: src={{ item }} dest=/home/vagrant/
+  with_fileglob:
+    - dot/.git-*
+    - dot/.bash*
+
+- name: install common package
+  apt: name={{ item }} state=present
+  with_items:
+    - git
+    - curl
+    - vim

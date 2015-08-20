@@ -1,0 +1,44 @@
+-
+ name: Add repos
+ yum: "name={{ item }} state=present"
+ with_items:
+   - http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+   - http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+ sudo: true
+ when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+-
+ name: enable repos remi
+ yum: "name={{ item }} enablerepo=remi,remi-php55"
+ with_items:
+   - http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+ sudo: true
+ when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+-
+ name: Package requirements
+ yum: name={{ item }} state=present update_cache=yes
+ with_items:
+  - wget
+  - curl
+  - unzip
+  - python
+  - python-setuptools
+  - tar
+  - gcc
+  - vim
+  - git
+  - gzip
+  - python-pycurl
+  - tzdata
+  - openssl
+  - openssh
+  - openssh-server
+  - fail2ban
+  - mlocate
+  - bzip2
+  - bind-utils
+  - bind
+  - dstat
+  - htop
+  - iftop
+  - rsync
+ sudo: true
