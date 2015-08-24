@@ -1,7 +1,7 @@
 ---
 - hosts: '{{ target }}' #you can choose any hosts gruop name|all|ip|patterns
   
-  user: vagrant
+  user: '{{ target_user }}'
 
   vars_files:
     - '{{ target_vars }}'
