@@ -1,0 +1,14 @@
+Be carefull don't commit this with plain credentials, add to .gitignore or encrypt with Ansible-Vault http://docs.ansible.com/ansible/playbooks_vault.html
+
+Check defaults variables on defaults/ here is a template that you can use:
+
+---
+ideato_mysql_user: ideato
+ideato_mysql_password: ideato
+ideato_mysql_db: db_ideato
+apache_user: vagrant
+server_name_virtual_host: ideato2.dev
+application_root_dir: /var/www
+php_ppa_54: php5-oldstable
+php_ppa: php5-5.6
+
