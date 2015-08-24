@@ -1,4 +1,4 @@
-Be carefull don't commit this with plain credentials, add to .gitignore or encrypt with Ansible-Vault http://docs.ansible.com/ansible/playbooks_vault.html
+Be carefull don't commit this with plain credentials, add to .gitignore or encrypt with Ansible-Vault <http://docs.ansible.com/ansible/playbooks_vault.html>
 
 here is a template that you can use:
 
