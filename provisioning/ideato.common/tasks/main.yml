@@ -1,5 +1,5 @@
 ---
 - include: dev.yml
-  when: {{ target }} == "development"
+  when: target == "development"
 - include: prod.yml
-  when: {{ target }}  == "production"
+  when: target == "production"

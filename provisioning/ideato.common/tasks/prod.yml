@@ -4,6 +4,3 @@
 - include: RedHat.yml
   when: ansible_os_family  == "RedHat"
 
-- name: "ensure /tmp/ideato exists"
-  file: path=/tmp/ideato state=directory
-
