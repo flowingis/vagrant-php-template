@@ -9,16 +9,6 @@
     name: mysql
     state: started
 
-- name: MySQL | Update the my.cnf
-  template:
-    src: my.cnf.j2
-    dest: /etc/mysql/my.cnf
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart mysql
-
 - name: MySQL | Set the root password.
   mysql_user:
     user: root
@@ -33,7 +23,7 @@
 
 - name: MySQL | Configure MySql for easy access as root user
   template:
-    src: root_dot_my.cnf.j2
+    src: root_my.cnf.j2
     dest: /root/.my.cnf
     owner: root
     group: root
