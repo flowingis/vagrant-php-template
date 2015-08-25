@@ -9,6 +9,9 @@
         dest=/etc/httpd/sites-available/{{ server_name_virtual_host }}.conf
         owner=root group=root mode=644 backup=yes
 
+- name: create web directory
+  file: path={{ application_root_dir }} owner=ideato group=ideato state=directory
+
 - name: enable development site
   shell: ln -s /etc/httpd/sites-available/{{ server_name_virtual_host }}.conf /etc/httpd/conf.d/{{ server_name_virtual_host }}.conf
   notify: restart httpd

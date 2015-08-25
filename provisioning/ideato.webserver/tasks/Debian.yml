@@ -16,6 +16,9 @@
         owner=root group=root mode=644 backup=yes
   when: ansible_distribution_release == "trusty"
 
+- name: create web directory
+  file: path={{ application_root_dir }} owner=ideato group=ideato state=directory
+
 - name: enable development site
   command: a2ensite {{ server_name_virtual_host }}.conf
   notify: restart apache
