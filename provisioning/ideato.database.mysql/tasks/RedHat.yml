@@ -3,6 +3,7 @@
   with_items:
   - mysql-server
   - mysql-client
+  - mysql-connector-python
 
 - name: MySQL | Ensure MySQL is running
   service:

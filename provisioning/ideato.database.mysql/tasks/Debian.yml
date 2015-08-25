@@ -3,7 +3,8 @@
   with_items:
   - mysql-server-5.5
   - mysql-client-5.5
-
+  - python-mysqldb
+  
 - name: MySQL | Ensure MySQL is running
   service:
     name: mysql
