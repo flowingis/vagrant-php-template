@@ -3,32 +3,29 @@
   with_items:
   - mysql-server
   - mysql-client
-  - mysql-connector-python
+  - python-pip
+  - python-devel
+  - mysql-devel
+
+- name: Install Ansible prerequire for mysql
+  pip: name=mysql-python
 
 - name: MySQL | Ensure MySQL is running
-  service:
-    name: mysql
-    state: started
+  service: name=mysql state=started
 
 - name: MySQL | Set the root password.
   mysql_user:
     user: root
     host: "{{item}}"
     password: "{{mysql_root_password}}"
+    check_implicit_admin: yes
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
   with_items:
    - "{{ansible_hostname}}"
    - 127.0.0.1
    - ::1
    - localhost
-  when: ansible_hostname != 'localhost'
-
-- name: MySQL | Configure MySql for easy access as root user
-  template:
-    src: root_my.cnf.j2
-    dest: /root/.my.cnf
-    owner: root
-    group: root
-    mode: 0600
 
 - name: MySQL | Remove the MySQL test database
   mysql_db:

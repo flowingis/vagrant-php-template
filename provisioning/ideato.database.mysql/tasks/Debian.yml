@@ -4,7 +4,7 @@
   - mysql-server-5.5
   - mysql-client-5.5
   - python-mysqldb
-  
+
 - name: MySQL | Ensure MySQL is running
   service:
     name: mysql
@@ -15,20 +15,14 @@
     user: root
     host: "{{item}}"
     password: "{{ mysql_root_password }}"
+    check_implicit_admin: yes
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
   with_items:
    - "{{ansible_hostname}}"
    - 127.0.0.1
    - ::1
    - localhost
-  when: ansible_hostname != 'localhost'
-
-- name: MySQL | Configure MySql for easy access as root user
-  template:
-    src: root_my.cnf.j2
-    dest: /root/.my.cnf
-    owner: root
-    group: root
-    mode: 0600
 
 - name: MySQL | Remove the MySQL test database
   mysql_db:
