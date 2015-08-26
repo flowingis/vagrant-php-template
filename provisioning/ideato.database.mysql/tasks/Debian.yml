@@ -28,24 +28,30 @@
   mysql_db:
     name: test
     state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: create mysql databases
+  mysql_db:
+    name: "{{ item }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  with_items:
+    - "{{ ideato_mysql_db }}"
 
 - name: add mysql user
-  mysql_user: name={{ ideato_mysql_user }}
-              host={{ item }}
-              password={{ ideato_mysql_password }} priv=*.*:ALL,GRANT
-              login_user=root
-              login_password={{ ideato_mysql_password }}
+  mysql_user:
+    name: "{{ ideato_mysql_user }}"
+    host: "{{ item }}"
+    password: "{{ ideato_mysql_password }}"
+    priv: "{{ ideato_mysql_db }}.*:ALL"
   with_items:
     - "{{ ansible_hostname }}"
     - 127.0.0.1
     - ::1
     - localhost
 
-- name: create mysql databases
-  mysql_db: name={{ item }}
-            state=present
-  with_items:
-    - "{{ ideato_mysql_db }}"
 
 
 
