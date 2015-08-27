@@ -1,6 +1,4 @@
 #!/bin/bash
-
-
 sudo yum update
 
 printf '**************************\n\n'
