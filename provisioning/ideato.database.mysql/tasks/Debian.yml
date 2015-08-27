@@ -40,14 +40,6 @@
   with_items:
     - "{{ ideato_mysql_db }}"
 
-- name: MySQL | Configure MySql for easy access as root user
-  template:
-    src: root_my.cnf.j2
-    dest: /root/.my.cnf
-    owner: root
-    group: root
-    mode: 0600
-
 - name: add mysql user
   mysql_user:
     name: "{{ ideato_mysql_user }}"
@@ -59,4 +51,7 @@
     - 127.0.0.1
     - ::1
     - localhost
+
+
+
 
