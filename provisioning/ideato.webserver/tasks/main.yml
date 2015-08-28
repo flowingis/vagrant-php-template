@@ -115,9 +115,16 @@
 - name: Symlink php-cs-fixer to bin dir
   file: path=/usr/bin/php-cs-fixer state=link src=/home/vagrant/.composer/vendor/bin/php-cs-fixer
 
-- name: Install phpmyadmin
-  apt: pkg=phpmyadmin state=present
+- shell: mkdir -p /usr/share/adminer
+  sudo: true
 
-- name: Include phpmyadmin config file into Apache config file
-  lineinfile: dest=/etc/apache2/apache2.conf line="Include /etc/phpmyadmin/apache.conf"
+- shell: wget "http://www.adminer.org/latest.php" -O /usr/share/adminer/latest.php
+  sudo: true
+
+- file: path=/usr/share/adminer/adminer.php state=link src=/usr/share/adminer/latest.php
+
+- lineinfile: dest=/etc/apache2/conf-available/adminer.conf create=yes line="Alias /adminer /usr/share/adminer/adminer.php"
+
+- shell: a2enconf adminer.conf
+  sudo: true
   notify: restart apache
