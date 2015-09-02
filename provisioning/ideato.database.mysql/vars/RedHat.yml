@@ -1,0 +1,7 @@
+---
+ideato_database_packages:
+  - mysql-server
+  - mysql-client
+  - python-pip
+  - python-devel
+  - mysql-devel

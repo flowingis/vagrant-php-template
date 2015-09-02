@@ -1,6 +1,70 @@
 ---
-- include: Debian.yml
-  when: ansible_os_family == "Debian"
-- include: RedHat.yml
-  when: ansible_os_family  == "RedHat"
+- name: include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
 
+- name: MySQL | package requirements
+  yum: name={{ ideato_database_packages }} state=present update_cache=yes
+  when: ansible_distribution == 'CentOS'
+
+- name: MySQL | package requirements
+  yum: name={{ ideato_database_packages }} state=present update_cache=yes
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install Ansible prerequire for mysql
+  pip: name=mysql-python
+  when: ansible_distribution == 'CentOS'
+
+- name: MySQL | Ensure MySQL is running
+  service:
+    name: mysql
+    state: started
+
+- name: MySQL | Set the root password.
+  mysql_user:
+    user: root
+    host: "{{item}}"
+    password: "{{ mysql_root_password }}"
+    check_implicit_admin: yes
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  with_items:
+   - "{{ansible_hostname}}"
+   - 127.0.0.1
+   - ::1
+   - localhost
+
+- name: MySQL | Remove the MySQL test database
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: create mysql databases
+  mysql_db:
+    name: "{{ item }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  with_items:
+    - "{{ ideato_mysql_db }}"
+
+- name: MySQL | Configure MySql for easy access as root user
+  template:
+    src: root_my.cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: 0600
+
+- name: add mysql user
+  mysql_user:
+    name: "{{ ideato_mysql_user }}"
+    host: "{{ item }}"
+    password: "{{ ideato_mysql_password }}"
+    priv: "{{ ideato_mysql_db }}.*:ALL"
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
