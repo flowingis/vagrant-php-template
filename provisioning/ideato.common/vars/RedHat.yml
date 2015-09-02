@@ -1,0 +1,26 @@
+---
+ideato_common_packages:
+  - wget
+  - curl
+  - unzip
+  - python
+  - python-setuptools
+  - tar
+  - gcc
+  - vim
+  - fail2ban
+  - git
+  - gzip
+  - python-pycurl
+  - tzdata
+  - openssl
+  - openssh
+  - openssh-server
+  - mlocate
+  - bzip2
+  - bind-utils
+  - bind
+  - dstat
+  - htop
+  - iftop
+  - rsync

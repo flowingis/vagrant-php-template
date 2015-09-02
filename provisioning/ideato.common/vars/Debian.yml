@@ -1,18 +1,19 @@
--
- name: Package requirements
- apt: name={{ item }} state=present update_cache=yes
- with_items:
+---
+ideato_common_packages:
   - wget
   - curl
   - unzip
   - python
   - python-setuptools
-  - apache2
   - tar
   - build-essential
   - vim
   - fail2ban
   - git
+  - gzip
+  - openssl
+  - openssh
+  - openssh-server
   - dnsutils
   - locate
   - bind9
