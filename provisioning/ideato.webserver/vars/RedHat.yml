@@ -1,0 +1,19 @@
+---
+ideato_webserver_packages:
+  - httpd
+  - php
+  - php-cli
+  - php-mysqlnd
+  - php-mcrypt
+  - php-gd
+  - php-common
+  - php-intl
+  - php-xmlrpc
+  - php-xml
+  - php-mbstring
+  - php-pdo
+  - php-pear
+  - php-devel
+  - php-pear-Net-Curl
+  - php-pecl-sqlite
+  - php-pecl-imagik

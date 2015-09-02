@@ -1,0 +1,20 @@
+---
+ideato_webserver_packages:
+  - apache2
+  - php5
+  - libapache2-mod-php5
+  - php5-cli
+  - php5-dev
+  - php5-mysql
+  - php-pear
+  - php5-mcrypt
+  - php5-gd
+  - php5-curl
+  - php5-xdebug
+  - php5-readline
+  - php5-sqlite
+  - php5-common
+  - php5-dev
+  - php5-imagick
+  - php5-intl
+  - php5-xmlrpc
