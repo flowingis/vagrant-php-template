@@ -13,7 +13,7 @@ Usage
 - customize vagrantconfig.yml to your needs
 (use hashicorp/precise64 as box for php 5.4 or ubuntu/trusty64 for php5.5 or php5.6)
 - run "vagrant up"
-- To use phpmyadmin go to: http://10.10.10.10/phpmyadmin
+- To use [adminer](http://www.adminer.org) go to: http://10.10.10.10/adminer
 
 ## Choose the PHP version
 
