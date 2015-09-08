@@ -97,7 +97,7 @@
   file: path=/usr/bin/phing state=link src=/home/vagrant/.composer/vendor/bin/phing
 
 - name: Install idephix
-  get_url: url=http://getidephix.com/idephix.phar dest=/tmp/idephix.phar
+  shell: curl --connect-timeout 10 --resolve 192.30.252.153:80 http://getidephix.com/idephix.phar
 
 - name: Copy idephix to bin dir
   command: chdir=/tmp creates=/usr/bin/idx mv idephix.phar /usr/bin/idx
