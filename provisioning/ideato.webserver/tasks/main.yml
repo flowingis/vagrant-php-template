@@ -8,6 +8,13 @@
   template: src=apache/virtual_host.j2
         dest=/etc/apache2/sites-available/virtual_host.conf
         owner=root group=root mode=644 backup=yes
+  when: ansible_distribution_release == "precise"
+
+- name: create virtual host24
+  template: src=apache/virtual_host24.j2
+        dest=/etc/apache2/sites-available/virtual_host.conf
+        owner=root group=root mode=644 backup=yes
+  when: ansible_distribution_release == "trusty"
 
 - name: enable development site
   command: a2ensite virtual_host.conf
@@ -90,7 +97,7 @@
   file: path=/usr/bin/phing state=link src=/home/vagrant/.composer/vendor/bin/phing
 
 - name: Install idephix
-  shell: chdir=/tmp curl http://getidephix.com/idephix.phar > idephix.phar
+  get_url: url=http://getidephix.com/idephix.phar dest=/tmp/idephix.phar
 
 - name: Copy idephix to bin dir
   command: chdir=/tmp creates=/usr/bin/idx mv idephix.phar /usr/bin/idx
