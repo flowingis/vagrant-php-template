@@ -35,3 +35,9 @@ This configuration install:
 - idephix (latest)
 - apache 2.4.x
 - mysql 5.5.x
+
+## Composer Auth Token
+
+In `provisioning/ideato.webserver/vars/main.yml` you can add a GitHub access token.
+Head to https://github.com/settings/tokens and generate your own access token, then
+assign it to the `composer_github_oauth` variable.

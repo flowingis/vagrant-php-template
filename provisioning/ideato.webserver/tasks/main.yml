@@ -86,6 +86,17 @@
 - name: Make composer executable
   file: path=/usr/bin/composer owner=vagrant group=vagrant mode="0777"
 
+- name: Create composer home directory
+  file: path={{ composer_home_path|default('/home/vagrant/.composer/') }} state=directory mode=0755 owner=vagrant group=vagrant
+
+- name: Configure github oauth token
+  template:
+    src: "composer/auth.json.j2"
+    dest: "{{ composer_home_path|default('/home/vagrant/.composer/') }}/auth.json"
+    owner: vagrant 
+    group: vagrant
+  when: composer_github_oauth != false
+
 - name: Install phing
   command: composer global require "phing/phing=2.*" --no-interaction chdir=/home/vagrant
   sudo_user: vagrant
