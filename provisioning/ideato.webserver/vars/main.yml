@@ -1,1 +1,5 @@
 # vars file for ideato.webserver
+
+# Visit https://github.com/settings/tokens 
+# and generate personal access token
+composer_github_oauth: false
