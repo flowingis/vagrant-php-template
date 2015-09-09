@@ -12,7 +12,7 @@ ideato_common_packages:
   - git
   - gzip
   - openssl
-  - openssh
+  - openssh-client
   - openssh-server
   - dnsutils
   - locate

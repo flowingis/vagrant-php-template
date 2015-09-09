@@ -1,21 +1,19 @@
 ---
 - name: include OS-specific variables
   include_vars: "{{ ansible_os_family }}.yml"
-#apache
+
 - name: install RedHat packages
-  yum: name={{ ideato_webserver_packages }} update_cache=yes state=present
+  yum: name={{ item }} update_cache=yes state=present
+  with_items: ideato_webserver_packages
 
 - name: create virtual host24
   template: src=apache/virtual_host24.j2
-        dest=/etc/httpd/sites-available/{{ server_name_virtual_host }}.conf
+        dest=/etc/httpd/conf.d/{{ server_name_virtual_host }}.conf
         owner=root group=root mode=644 backup=yes
+  notify: restart httpd
 
 - name: create web directory
-  file: path={{ application_root_dir }} owner=ideato group=ideato state=directory
-
-- name: enable development site
-  shell: ln -s /etc/httpd/sites-available/{{ server_name_virtual_host }}.conf /etc/httpd/conf.d/{{ server_name_virtual_host }}.conf
-  notify: restart httpd
+  file: path={{ application_root_dir }} owner={{ web_user }} group={{ web_user }} state=directory
 
 - name: Install composer
   shell: chdir=/tmp creates=/tmp/composer.phar curl -sS https://getcomposer.org/installer | php

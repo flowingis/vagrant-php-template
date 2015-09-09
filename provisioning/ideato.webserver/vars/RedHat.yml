@@ -15,5 +15,4 @@ ideato_webserver_packages:
   - php-pear
   - php-devel
   - php-pear-Net-Curl
-  - php-pecl-sqlite
-  - php-pecl-imagik
+  - php-pecl-imagick
