@@ -53,7 +53,7 @@ assign it to the `composer_github_oauth` variable.
 Continuous Delivery Usage
 =====
 
-You can also use vagrant-php-template as a ***Continuous Delivery*** instrument.
+You can also use vagrant-php-template as a ***Continuous Delivery*** tool.
 We found three stages on our deployment pipeline and mapped on the template using Vagrant and Ansible for dev environment and stage & production just Ansible.
 You can provision Debian or RedHat staging/production env, on next release you can also setup a RedHat development environment
 
@@ -89,11 +89,10 @@ When you have tested your feature, you are ready to push on staging env, to this
 	- launch on staging
 
 		```
-		ansible-playbook  ---i vagrant/provisioning/hosts.ini --vault-password-file vagrant/provisioning/playbooks.yml --extra-vars "target=staging target_user=<your remote user> target_vars=host_vars/staging.yml" -vv
+		ansible-playbook  -i vagrant/provisioning/hosts.ini --vault-password-file vagrant/provisioning/playbooks.yml --extra-vars "target=staging target_user=<your remote user> target_vars=host_vars/staging.yml" -vv
 		
 		```
 		```
-		ansible-playbook --become-user=<your remote user> -i vagrant/provisioning/hosts.ini --vault-password-file vagrant/provisioning/playbooks.yml --extra-vars "target=production target_user=<your remote user> target_vars=host_vars/production.yml" -vv
+		ansible-playbook --become-user=<your remote user> -i vagrant/provisioning/hosts.ini -vagrant/provisioning/playbooks.yml --extra-vars "target=production target_user=<your remote user> target_vars=host_vars/production.yml" -vv
 		```
 		
-Probably you might think this is a bit tricky but in a Continuous Integration server you can easily setup a shell command for Ansible run.
