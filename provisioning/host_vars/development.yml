@@ -1,6 +1,5 @@
 Be carefull don't commit this with plain credentials, add to .gitignore or encrypt with Ansible-Vault http://docs.ansible.com/ansible/playbooks_vault.html
-
-Check defaults variables on defaults/ here is a template that you can use:
+here is a template that you can use, please also delete these notes to accomplish a valid YAML
 
 ---
 ideato_mysql_user: ideato
