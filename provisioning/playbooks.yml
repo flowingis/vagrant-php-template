@@ -1,10 +1,13 @@
 ---
-- hosts: development #you can choose any hosts gruop name|all|ip|patterns
-
+- hosts: '{{ target }}' #you can choose any hosts gruop name|all|ip|patterns
+  
   user: vagrant
 
-  gather_facts: yes # send fact from remote host. if "no" you can't use variables from remote host like "ohai_fqdn"
-                    # to show host name
+  vars_files:
+    - '{{ target_vars }}'
+  
+  gather_facts: yes
+  
   roles:
     - ideato.common
     - ideato.webserver

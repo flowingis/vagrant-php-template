@@ -8,7 +8,7 @@
  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
 -
  name: enable repos remi
- yum: "name={{ item }} enablerepo=remi,remi-php55"
+ yum: "name={{ item }} enablerepo=remi,remi-php56"
  with_items:
    - http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
  sudo: true

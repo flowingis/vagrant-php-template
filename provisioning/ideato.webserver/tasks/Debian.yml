@@ -1,0 +1,61 @@
+---
+
+#apache
+- name: install apache
+  apt: name=apache2 state=present
+
+- name: create virtual host
+  template: src=apache/virtual_host.j2
+        dest=/etc/apache2/sites-available/{{ server_name_virtual_host }}.conf
+        owner=root group=root mode=644 backup=yes
+  when: ansible_distribution_release == "precise"
+
+- name: create virtual host24
+  template: src=apache/virtual_host24.j2
+        dest=/etc/apache2/sites-available/{{ server_name_virtual_host }}.conf
+        owner=root group=root mode=644 backup=yes
+  when: ansible_distribution_release == "trusty"
+
+- name: enable development site
+  command: a2ensite {{ server_name_virtual_host }}.conf
+  notify: restart apache
+
+#php54
+- name: add php54 ppa
+  apt_repository: repo=ppa:ondrej/{{ php_ppa_54 }}
+  when: ansible_distribution_release == "precise"
+
+#php55
+- name: add php55 or php56 ppa
+  apt_repository: repo=ppa:ondrej/{{ php_ppa }}
+  when: ansible_distribution_release == "trusty"
+
+#apt update
+- name: Update apt
+  apt: update_cache=yes
+
+- name: install PHP5 packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - php5
+    - libapache2-mod-php5
+    - php5-cli
+    - php5-dev
+    - php5-mysql
+    - php-pear
+    - php5-mcrypt
+    - php5-gd
+    - php5-curl
+    - php5-xdebug
+    - php5-readline
+    - php5-sqlite
+    - php5-common
+    - php5-dev
+    - php5-imagick
+    - php5-intl
+    - php5-xmlrpc
+
+- apache2_module: state=present name=php5
+- apache2_module: state=present name=rewrite
+- apache2_module: state=present name=env
+

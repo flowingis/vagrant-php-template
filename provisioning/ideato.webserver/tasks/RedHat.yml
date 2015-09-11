@@ -1,0 +1,38 @@
+---
+
+#apache
+- name: install httpd
+  apt: name=httpd state=present
+
+- name: create virtual host24
+  template: src=apache/virtual_host24.j2
+        dest=/etc/httpd/sites-available/{{ server_name_virtual_host }}.conf
+        owner=root group=root mode=644 backup=yes
+
+- name: enable development site
+  shell: ln -s /etc/httpd/sites-available/{{ server_name_virtual_host }}.conf /etc/httpd/conf.d/{{ server_name_virtual_host }}.conf
+  notify: restart httpd
+
+- name: Update yum
+  yum: update_cache=yes
+
+- name: install PHP5 packages
+  yum: name={{ item }} state=latest
+  with_items:
+    - php-cli
+    - php-mysqlnd
+    - php-mcrypt
+    - php-gd
+    - php-common
+    - php-intl
+    - php-xmlrpc
+    - php-xml
+    - php-mbstring
+    - php-pdo
+    - php-pear
+    - php-devel
+    - php-pear-Net-Curl
+    - php-pecl-sqlite
+    - php-pecl-imagik
+
+

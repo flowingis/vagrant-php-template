@@ -2,8 +2,8 @@
     ServerName {{ server_name_virtual_host }}
     DocumentRoot "{{ application_root_dir }}"
 
-    CustomLog /var/log/apache2/virtual_host-access.log combined
-    ErrorLog /var/log/apache2/virtual_host-error.log
+    CustomLog /var/log/apache2/{{ server_name_virtual_host }}-access.log combined
+    ErrorLog /var/log/apache2/{{ server_name_virtual_host }}-error.log
     <Directory "{{ application_root_dir }}">
         AllowOverride All
         Order allow,deny
