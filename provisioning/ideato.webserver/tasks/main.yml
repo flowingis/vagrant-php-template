@@ -93,7 +93,7 @@
   template:
     src: "composer/auth.json.j2"
     dest: "{{ composer_home_path|default('/home/vagrant/.composer/') }}/auth.json"
-    owner: vagrant 
+    owner: vagrant
     group: vagrant
   when: composer_github_oauth != false
 
@@ -132,10 +132,3 @@
 
 - name: Symlink php-cs-fixer to bin dir
   file: path=/usr/bin/php-cs-fixer state=link src=/home/vagrant/.composer/vendor/bin/php-cs-fixer
-
-- name: Install phpmyadmin
-  apt: pkg=phpmyadmin state=present
-
-- name: Include phpmyadmin config file into Apache config file
-  lineinfile: dest=/etc/apache2/apache2.conf line="Include /etc/phpmyadmin/apache.conf"
-  notify: restart apache

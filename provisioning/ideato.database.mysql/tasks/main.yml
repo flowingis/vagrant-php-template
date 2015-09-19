@@ -40,3 +40,15 @@
             value=1
             backup=yes
   notify: restart mysql
+
+- name: Install phpmyadmin
+  apt: pkg=phpmyadmin state=present
+
+- name: Include phpmyadmin config file into Apache config file
+  lineinfile: dest=/etc/apache2/apache2.conf line="Include /etc/phpmyadmin/apache.conf"
+  notify: restart apache
+
+- name: "Avoid login screen in phpmyadmin and auto login"
+  template:
+    src: "phpmyadmin/config.auth_type.php"
+    dest: "/etc/phpmyadmin/conf.d"
