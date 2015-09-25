@@ -1,0 +1,24 @@
+---
+ideato_common_packages:
+  - wget
+  - curl
+  - unzip
+  - python
+  - python-setuptools
+  - tar
+  - build-essential
+  - vim
+  - fail2ban
+  - git
+  - gzip
+  - openssl
+  - openssh-client
+  - openssh-server
+  - dnsutils
+  - locate
+  - bind9
+  - dnsutils
+  - dstat
+  - htop
+  - iftop
+  - rsync

@@ -1,0 +1,130 @@
+---
+
+#apache
+- name: install apache
+  apt: name=apache2 state=present
+
+- name: create virtual host
+  template: src=apache/virtual_host.j2
+        dest=/etc/apache2/sites-available/{{ server_name_virtual_host }}.conf
+        owner=root group=root mode=644 backup=yes
+  when: ansible_distribution_release == "precise"
+
+- name: create virtual host24
+  template: src=apache/virtual_host24.j2
+        dest=/etc/apache2/sites-available/{{ server_name_virtual_host }}.conf.conf
+        owner=root group=root mode=644 backup=yes
+  when: ansible_distribution_release == "trusty"
+
+- name: enable development site
+  command: a2ensite {{ server_name_virtual_host }}.conf.conf
+  notify: restart apache
+
+#php54
+- name: add php54 ppa
+  apt_repository: repo=ppa:ondrej/{{ php_ppa_54 }}
+  when: ansible_distribution_release == "precise"
+
+#php55
+- name: add php55 or php56 ppa
+  apt_repository: repo=ppa:ondrej/{{ php_ppa }}
+  when: ansible_distribution_release == "trusty"
+
+#apt update
+- name: Update apt
+  apt: update_cache=yes
+
+- name: install PHP5 packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - php5
+    - libapache2-mod-php5
+    - php5-cli
+    - php5-dev
+    - php5-mysql
+    - php-pear
+    - php5-mcrypt
+    - php5-gd
+    - php5-curl
+    - php5-xdebug
+    - php5-memcache
+    - php5-memcached
+    - php5-readline
+    - php5-sqlite
+    - php5-common
+    - php5-dev
+    - php5-imagick
+    - php5-intl
+    - php5-xmlrpc
+
+- file: path=/etc/php5/mods-available/custom.ini state=touch
+- ini_file: dest=/etc/php5/mods-available/custom.ini
+            section=Date
+            option=date.timezone
+            value=Europe/Rome
+            backup=yes
+
+- name: Enable custom.ini module
+  command: php5enmod custom
+
+- apache2_module: state=present name=php5
+- apache2_module: state=present name=rewrite
+- apache2_module: state=present name=env
+
+- name: update apache env variables
+  replace: dest=/etc/apache2/envvars regexp='www-data' replace='vagrant' backup=yes
+
+- file: path=/var/lock/apache2 owner=vagrant group=vagrant
+  notify: restart apache
+
+- name: Install composer
+  shell: chdir=/tmp creates=/tmp/composer.phar curl -sS https://getcomposer.org/installer | php
+
+- name: Copy composer to bin dir
+  shell: chdir=/tmp creates=/usr/bin/composer mv composer.phar /usr/bin/composer
+
+- name: Make composer executable
+  file: path=/usr/bin/composer owner=vagrant group=vagrant mode="0777"
+
+- name: Install phing
+  command: composer global require "phing/phing=2.*" --no-interaction chdir=/home/vagrant
+  sudo_user: vagrant
+
+- name: Remove phing bin
+  file: path=/usr/bin/phing state=absent
+
+- name: Symlink phing to bin dir
+  file: path=/usr/bin/phing state=link src=/home/vagrant/.composer/vendor/bin/phing
+
+- name: Install idephix
+  get_url: url=http://getidephix.com/idephix.phar dest=/tmp/idephix.phar
+
+- name: Copy idephix to bin dir
+  command: chdir=/tmp creates=/usr/bin/idx mv idephix.phar /usr/bin/idx
+
+- name: Make idephix executable
+  file: path=/usr/bin/idx owner=vagrant group=vagrant mode="0777"
+
+- name: Install phpunit
+  shell: composer global require "phpunit/phpunit=4.3.*" --no-interaction chdir=/home/vagrant/
+  sudo_user: vagrant
+
+- name: Remove phpunit bin
+  file: path=/usr/bin/phpunit state=absent
+
+- name: Symlink phpunit to bin dir
+  file: path=/usr/bin/phpunit state=link src=/home/vagrant/.composer/vendor/bin/phpunit
+
+- name: Install php-cs-fixer
+  shell: composer global require "fabpot/php-cs-fixer" --no-interaction chdir=/home/vagrant/
+  sudo_user: vagrant
+
+- name: Symlink php-cs-fixer to bin dir
+  file: path=/usr/bin/php-cs-fixer state=link src=/home/vagrant/.composer/vendor/bin/php-cs-fixer
+
+- name: Install phpmyadmin
+  apt: pkg=phpmyadmin state=present
+
+- name: Include phpmyadmin config file into Apache config file
+  lineinfile: dest=/etc/apache2/apache2.conf line="Include /etc/phpmyadmin/apache.conf"
+  notify: restart apache

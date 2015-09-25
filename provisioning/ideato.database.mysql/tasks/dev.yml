@@ -1,0 +1,41 @@
+---
+- name: install MySQL
+  apt: name={{ item }} state=present
+  with_items:
+    - mysql-server
+    - mysql-client
+    - python-mysqldb
+
+- name: add mysql user
+  mysql_user: name={{ ideato_mysql_user }}
+              host={{ item }}
+              password={{ ideato_mysql_password }} priv=*.*:ALL,GRANT
+              login_user=root
+              login_password=
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: create mysql databases
+  mysql_db: name={{ item }}
+            state=present
+  with_items:
+    - "{{ ideato_mysql_db }}"
+
+- name: enabled mysql log
+  ini_file: dest=/etc/mysql/my.cnf
+            section=mysqld
+            option=general_log_file
+            value=/var/log/mysql/mysql.log
+            backup=yes
+  notify: restart mysql
+
+- name: enabled mysql log
+  ini_file: dest=/etc/mysql/my.cnf
+            section=mysqld
+            option=general_log
+            value=1
+            backup=yes
+  notify: restart mysql

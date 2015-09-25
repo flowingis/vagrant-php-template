@@ -1,0 +1,27 @@
+---
+- name: include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: install RedHat packages
+  yum: name={{ item }} update_cache=yes state=present
+  with_items: ideato_webserver_packages
+
+- name: create virtual host24
+  template: src=apache/virtual_host24.j2
+        dest=/etc/httpd/conf.d/{{ server_name_virtual_host }}.conf
+        owner=root group=root mode=644 backup=yes
+  notify: restart httpd
+
+- name: create web directory
+  file: path={{ application_root_dir }} owner={{ web_user }} group={{ web_user }} state=directory
+
+- name: Install composer
+  shell: chdir=/tmp creates=/tmp/composer.phar curl -sS https://getcomposer.org/installer | php
+
+- name: Copy composer to bin dir
+  shell: chdir=/tmp creates=/usr/bin/composer mv composer.phar /usr/bin/composer
+
+- name: Make composer executable
+  file: path=/usr/bin/composer owner=root group=root mode="0755"
+
+

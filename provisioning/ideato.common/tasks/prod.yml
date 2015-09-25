@@ -1,0 +1,43 @@
+---
+- name: include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+-
+ name: Add repos
+ yum: "name={{ item }} state=present"
+ with_items:
+   - http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+ sudo: true
+ when: ansible_distribution == 'CentOS'
+-
+ name: Add repos
+ yum: "name={{ item }} state=present"
+ with_items:
+   - http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+ sudo: true
+ when: ansible_distribution == 'CentOS'
+-
+ name: Add repos
+ shell: sed -i -e '/\[remi-php55\]/,/^\[/s/enabled=0/enabled=1/' /etc/yum.repos.d/remi.repo
+ with_items:
+   - remi.repo
+ sudo: true
+ when: ansible_distribution == 'CentOS' and  php_ppa  == 'php5'
+-
+ name: Add repos
+ shell: sed -i -e '/\[remi-php55\]/,/^\[/s/enabled=0/enabled=1/' /etc/yum.repos.d/remi.repo
+ with_items:
+   - remi.repo
+ sudo: true
+ when: ansible_distribution == 'CentOS' and php_ppa  == 'php5-5.6'
+-
+ name: Package requirements for CentOS
+ yum: name={{ item }} state=present update_cache=yes
+ when: ansible_distribution == 'CentOS'
+ with_items: ideato_common_packages
+-
+ name: Package requirements for Ubuntu
+ apt: name={{ item }} state=present update_cache=yes
+ when: ansible_distribution == 'Ubuntu'
+ with_items: ideato_common_packages
+
+

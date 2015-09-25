@@ -1,0 +1,15 @@
+Be carefull don't commit this with plain credentials, add to .gitignore or encrypt with Ansible-Vault http://docs.ansible.com/ansible/playbooks_vault.html
+here is a template that you can use, please also delete these notes to accomplish a valid YAML
+
+---
+ideato_mysql_user: example
+ideato_mysql_password: strong_example
+ideato_mysql_db: strong_db
+mysql_root_password: reallystrong_example (only for prod env)
+apache_user: vagrant (for dev env) www-data (for Ubuntu env) or apache (for CentOS env)
+web_user: www-data
+server_name_virtual_host: www.example.it
+application_root_dir: /var/www/examplefolder
+php_ppa_54: php5-oldstable
+php_ppa: php5-5.6
+

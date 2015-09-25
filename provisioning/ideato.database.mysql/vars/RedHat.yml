@@ -1,0 +1,6 @@
+---
+ideato_database_packages:
+  - Percona-Server-server-55
+  - python-pip
+  - python-devel
+  - mysql-devel
