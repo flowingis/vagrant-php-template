@@ -83,10 +83,10 @@ When you have tested your feature, you are ready to push on staging env, to this
 
 		```
 		ansible-playbook  -i vagrant/provisioning/hosts.ini  --extra-vars "target=staging target_user=<your remote user> target_vars=host_vars/staging.yml" -vv
-		
 		```
+
 	- launch on production
+
 		```
 		ansible-playbook  -i vagrant/provisioning/hosts.ini -vagrant/provisioning/playbooks.yml --extra-vars "target=production target_user=<your remote user> target_vars=host_vars/production.yml" -vv
 		```
-		
