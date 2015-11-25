@@ -57,11 +57,6 @@ You can also use vagrant-php-template as a ***Continuous Delivery*** tool.
 We found three stages on our deployment pipeline and mapped on the template using Vagrant and Ansible for dev environment and stage & production just Ansible.
 You can provision Debian or RedHat staging/production env, on next release you can also setup a RedHat development environment
 
-Some requirements:
-
-- ***staging and production env must exists***
-- ***ansible works with ssh***, I will give more details below
-
 A possible workflow is:
 
 1. provision your dev environment using Vagrant
@@ -81,18 +76,17 @@ When you have tested your feature, you are ready to push on staging env, to this
 2. please edit host\_vars/staging.yml and host_vars/production.yml and set variables like a common dev usage
 
 3. to provision with Ansible:
+  
+   Please note that you have to be able to connect to the remote machines [http://www.erikaheidi.com/blog/configuring-ssh-server-access-for-ansible](http://www.erikaheidi.com/blog/configuring-ssh-server-access-for-ansible)
 
-	- require ssh connection
-	- use an existing or generate a new private key( ssh-keygen -t rsa -b 4096 -f continuous_dev.pem)
-	- ssh-copy-id -i ~.ssh/<yourkey> <remote user>@<remote ip>
-	- do a test: ssh \<remote user>@\<remote ip>
 	- launch on staging
 
 		```
-		ansible-playbook  -i vagrant/provisioning/hosts.ini --vault-password-file vagrant/provisioning/playbooks.yml --extra-vars "target=staging target_user=<your remote user> target_vars=host_vars/staging.yml" -vv
+		ansible-playbook  -i vagrant/provisioning/hosts.ini  --extra-vars "target=staging target_user=<your remote user> target_vars=host_vars/staging.yml" -vv
 		
 		```
+	- launch on production
 		```
-		ansible-playbook --become-user=<your remote user> -i vagrant/provisioning/hosts.ini -vagrant/provisioning/playbooks.yml --extra-vars "target=production target_user=<your remote user> target_vars=host_vars/production.yml" -vv
+		ansible-playbook  -i vagrant/provisioning/hosts.ini -vagrant/provisioning/playbooks.yml --extra-vars "target=production target_user=<your remote user> target_vars=host_vars/production.yml" -vv
 		```
 		
