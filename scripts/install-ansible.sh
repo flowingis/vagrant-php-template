@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -f /etc/centos-release]; then
+if [ -f /etc/centos-release ]; then
 
 	export PYTHONUNBUFFERED=1
 	yum install wget
