@@ -3,7 +3,7 @@
 if [ -f /etc/centos-release ]; then
 
 	export PYTHONUNBUFFERED=1
-	yum install wget
+	yum -y install wget
 	wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
 	sudo yum -y install epel-release-7-5.noarch.rpm
 	sudo yum --enablerepo="epel"
