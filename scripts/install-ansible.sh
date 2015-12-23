@@ -7,7 +7,7 @@ if [ -f /etc/centos-release ]; then
 	wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
 	sudo yum -y install epel-release-7-5.noarch.rpm
 	sudo yum --enablerepo="epel"
-	sudo yum update
+	sudo yum -y update
 
 	printf '**************************\n\n'
 	printf 'Install cachefilesd'
