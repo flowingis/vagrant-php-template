@@ -12,3 +12,6 @@
     - git
     - curl
     - vim
+    
+- name: Set SYMFONY__USE_SHM environment variable
+  lineinfile: dest=/etc/environment line='SYMFONY__USE_SHM="true"'
