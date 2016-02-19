@@ -106,7 +106,7 @@
   file: path=/usr/bin/idx owner=vagrant group=vagrant mode="0777"
 
 - name: Install phpunit
-  shell: composer global require "phpunit/phpunit=4.3.*" --no-interaction chdir=/home/vagrant/
+  shell: composer global require "phpunit/phpunit=^5.0" --no-interaction chdir=/home/vagrant/
   sudo_user: vagrant
 
 - name: Remove phpunit bin
