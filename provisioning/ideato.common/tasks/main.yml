@@ -1,4 +1,10 @@
 ---
+- name: install locale
+  locale_gen: name=en_US.UTF-8 state=present
+
+- name: set default locale
+  command: /usr/sbin/update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+
 - include: dev.yml
   when: target == "development"
 - include: prod.yml
