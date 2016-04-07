@@ -27,13 +27,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     CONF["name"],
   ]
 
-  config.vm.synced_folder "./", "/var/www", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc', 'actimeo=1']
+  config.vm.synced_folder "./", "/var/www", type: "nfs", mount_options: ['rw', 'nolock', 'vers=3', 'tcp', 'fsc', 'actimeo=1']
 
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", CONF["ram"]]
     vb.customize ["modifyvm", :id, "--cpus", CONF["cpus"]]
   end
-  
+
   config.vm.provider "vmware_fusion" do |v|
     v.vmx["memsize"] = CONF["ram"]
     v.vmx["numvcpus"] = CONF["cpus"]
