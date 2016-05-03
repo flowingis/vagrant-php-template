@@ -20,7 +20,7 @@ printf '**************************\n\n'
 printf 'Install ansible'
 printf '**************************\n\n'
 sudo apt-get install -y python-pip python-dev python-pycurl
-sudo pip install ansible
+sudo pip install markupsafe && pip install ansible
 
 sudo mkdir -p /etc/ansible
 

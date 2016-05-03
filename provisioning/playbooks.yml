@@ -2,9 +2,6 @@
 - hosts: '{{ target }}' #you can choose any hosts gruop name|all|ip|patterns
   
   user: '{{ target_user }}'
-
-  vars_files:
-    - '{{ target_vars }}'
   
   gather_facts: yes
   
