@@ -20,7 +20,10 @@ printf '**************************\n\n'
 printf 'Install ansible'
 printf '**************************\n\n'
 sudo apt-get install -y python-pip python-dev python-pycurl
-sudo pip install ansible
+sudo apt-get install -y software-properties-common python-software-properties
+sudo add-apt-repository ppa:ansible/ansible-1.9
+sudo apt-get update
+sudo apt-get install -y ansible
 
 sudo mkdir -p /etc/ansible
 
