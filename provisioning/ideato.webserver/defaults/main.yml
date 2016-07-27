@@ -1,10 +1,2 @@
 ---
-
-#customize apache and virtual host
-apache_user: vagrant
-server_name_virtual_host: ideato2.dev
-application_root_dir: /var/www
-
-php_ppa_54: php5-oldstable
-#php_ppa: php5
-php_ppa: php5-5.6
+# defaults file for ideato.webserver

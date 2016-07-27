@@ -1,11 +1,45 @@
 ---
+
 - name: install locale
   locale_gen: name=en_US.UTF-8 state=present
 
 - name: set default locale
   command: /usr/sbin/update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
-- include: dev.yml
-  when: target == "development"
-- include: prod.yml
-  when: target == "production" or target == "staging"
+- name: setup /etc/hosts
+  lineinfile: dest=/etc/hosts line="10.10.10.88 sundew.local"
+
+- name: setup /etc/hosts
+  lineinfile: dest=/etc/hosts line="10.10.10.88 api.sundew.local"
+
+- name: enables bash colors
+  lineinfile: dest=/home/vagrant/.bashrc regexp=/#force_color_prompt=yes/ line=force_color_prompt=yes
+
+- name: add Public Signing Key
+  shell: wget -O - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add -
+
+- name: add apt repository
+  apt_repository: repo="deb http://packages.elasticsearch.org/elasticsearch/1.4/debian stable main" state=present update_cache=yes
+
+- name: install common package
+  apt: name={{ item }} state=present
+  with_items:
+    - git
+    - curl
+    - zsh
+    - vim
+    - openjdk-7-jre
+    - elasticsearch
+
+- name: Enable cors on elasticsearch
+  lineinfile: 'dest=/etc/elasticsearch/elasticsearch.yml line="http.cors.enabled: true"'
+
+- name: Enable ElasticSearch service
+  service: name=elasticsearch state=started enabled=yes
+
+- name: Install selenium dependencies
+  apt: name={{ item }} state=latest
+  with_items:
+    - openjdk-7-jre-headless
+    - firefox
+    - xvfb

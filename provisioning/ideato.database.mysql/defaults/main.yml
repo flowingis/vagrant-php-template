@@ -1,4 +1,2 @@
 ---
-ideato_mysql_user: ideato
-ideato_mysql_password: ideato
-ideato_mysql_db: db_ideato
+# defaults file for ideato.database.mysql
