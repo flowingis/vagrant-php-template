@@ -1,5 +1,133 @@
 ---
-- include: dev.yml
-  when: target == "development"
-- include: prod.yml
-  when: target == "production" or target == "staging"
+
+#nginx
+- name: Install Nginx
+  sudo: yes
+  apt: pkg=nginx state=latest
+
+- name: Add configuration to nginx
+  sudo: yes
+  template: src={{ ws_template }} dest={{ ws_vhost_path }}/{{ ws_vhost_file }}.conf
+  notify: restart nginx
+
+- name: Nginx run as 'vagrant' user
+  lineinfile: dest=/etc/nginx/nginx.conf regexp='^user www-data;$' line='user vagrant;' backrefs=yes
+
+#php7
+- name: add
+  apt: pkg=language-pack-en-base state=latest
+
+- name: add php7 ppa
+  apt_repository: repo=ppa:ondrej/php
+
+#apt update
+- name: Update apt
+  apt: update_cache=yes
+
+- name: install PHP7 packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - php-cli
+    - php-dev
+    - php-mysql
+    - php-pear
+    - php-mcrypt
+    - php-gd
+    - php-curl
+    - php-readline
+    - php-common
+    - php-dev
+    - php-imagick
+    - php-intl
+    - php-xmlrpc
+    - php-mbstring
+    - php-bcmath
+    - php-bz2
+    - php-soap
+    - php-zip
+    - php-xml
+    - php-fpm
+
+#config php
+- ini_file: dest=/etc/php/7.0/mods-available/custom.ini
+            section=Date
+            option=date.timezone
+            value=Europe/Rome
+
+- ini_file: dest=/etc/php/7.0/mods-available/custom.ini
+            section=ErrorLog
+            option=error_log
+            value=/var/log/php/error.log
+
+- ini_file: dest=/etc/php/7.0/mods-available/custom.ini
+            section=PHP
+            option=display_errors
+            value=On
+
+- name: Php fpm fix socket permissions
+  lineinfile: dest=/etc/php/7.0/fpm/pool.d/www.conf  regexp='^;listen.mode = 0660$' line='listen.mode = 0666' backrefs=yes
+  notify: restart php-fpm
+
+- name: Php fpm run as user vagrant
+  lineinfile: dest=/etc/php/7.0/fpm/pool.d/www.conf  regexp='^user = www-data$' line='user = vagrant' backrefs=yes
+  notify: restart php-fpm
+
+- name: Install composer
+  shell: chdir=/tmp creates=/tmp/composer.phar curl -sS https://getcomposer.org/installer | php
+
+- name: Copy composer to bin dir
+  shell: chdir=/tmp creates=/usr/bin/composer mv composer.phar /usr/bin/composer
+
+- name: Make composer executable
+  file: path=/usr/bin/composer owner=vagrant group=vagrant mode="0777"
+
+- name: config swap for composer (https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors)
+  shell: /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+  ignore_errors: True
+
+- name: config swap for composer (https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors)
+  shell: /sbin/mkswap /var/swap.1
+  ignore_errors: True
+
+- name: config swap for composer (https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors)
+  shell: /sbin/swapon /var/swap.1
+  ignore_errors: True
+
+- name: Install phpmyadmin
+  apt: pkg=phpmyadmin state=present
+  notify:
+    - restart nginx
+
+- name: Change default phpmyadmin config file
+  sudo: yes
+  template: src={{ phpmyadmin_config_file_template }} dest={{ phpmyadmin_config_file }}
+  notify: restart nginx
+
+- name: Create .composer dir if it does not exist
+  file: path=/home/vagrant/.composer state=directory
+
+- name: Add github user token for composer install/update
+  sudo: yes
+  template: src={{ composer_auth_token_template }} dest={{ composer_auth_token }}
+
+# node
+- name: install nodejs deps
+  apt: name={{ item }} state=present
+  with_items:
+    - python-software-properties
+
+- name: add nodejs 6.x ppa
+  shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+
+- name: Update apt
+  apt: update_cache=yes
+
+- name: install nodejs
+  apt: name={{ item }} state=latest
+  with_items: nodejs
+
+- name: Update NODE_PATH
+  lineinfile: dest=/home/vagrant/.bashrc line='export NODE_PATH="$NODE_PATH:./node_modules"'
+
+- name: Update npm version
+  shell: npm install npm -g

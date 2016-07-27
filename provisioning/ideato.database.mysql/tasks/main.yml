@@ -1,5 +1,48 @@
 ---
-- include: dev.yml
-  when: target == "development"
-- include: prod.yml
-  when: target == "production" or target == "staging"
+
+- name: install python-apt for Ansible apt_repository module
+  apt: name=python-apt state=present
+
+- apt_repository: repo='deb http://repo.mysql.com/apt/ubuntu/ precise mysql-5.6' state=present
+
+- apt_repository: repo='deb http://repo.mysql.com/apt/ubuntu/ precise connector-python-2.0'
+
+- name: install MySQL
+  apt: name={{ item }} state=present force=yes
+  with_items:
+    - mysql-community-server
+    - python-mysqldb
+
+- name: add mysql user
+  mysql_user: name={{ ideato_mysql_user }}
+              host={{ item }}
+              password={{ ideato_mysql_password }} priv=*.*:ALL,GRANT
+              login_user=root
+              login_password=
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: create mysql databases
+  mysql_db: name={{ item }}
+            state=present
+  with_items:
+    - "{{ ideato_mysql_db }}"
+
+- name: enabled mysql log
+  ini_file: dest=/etc/mysql/my.cnf
+            section=mysqld
+            option=general_log_file
+            value=/var/log/mysql/mysql.log
+            backup=yes
+  notify: restart mysql
+
+- name: enabled mysql log
+  ini_file: dest=/etc/mysql/my.cnf
+            section=mysqld
+            option=general_log
+            value=1
+            backup=yes
+  notify: restart mysql
