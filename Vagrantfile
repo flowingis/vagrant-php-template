@@ -2,17 +2,16 @@
 # vi: set ft=ruby :
 require 'yaml'
 
-# Load up our vagrant config files -- vagrantconfig.yml first
-_config = YAML.load(File.open(File.join(File.dirname(__FILE__), "vagrantconfig.yml"), File::RDONLY).read)
+# Load up our vagrant config files -- vagrant/vagrantconfig.yml first
+_config = YAML.load(File.open(File.join(File.dirname(__FILE__), "vagrant/vagrantconfig.yml"), File::RDONLY).read)
 CONF = _config
 
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box_check_update = false
+  config.vm.box = "bento/centos-7.2"
   config.vm.hostname = CONF["name"]
-
   config.vm.network "private_network", ip: CONF["ipaddress"]
 
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
@@ -23,11 +22,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.hostsupdater.remove_on_suspend = true
-  config.hostsupdater.aliases = [
-    CONF["name"],
-  ]
+  config.hostsupdater.aliases = CONF['hosts']
 
-  config.vm.synced_folder "./", "/var/www", type: "nfs", mount_options: ['rw', 'nolock', 'vers=3', 'tcp', 'fsc', 'actimeo=1']
+  config.vm.synced_folder "./", CONF["synced_folder"], type: "nfs", mount_options: ['rw', 'nolock', 'vers=3', 'tcp', 'fsc', 'actimeo=2']
 
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", CONF["ram"]]
@@ -39,7 +36,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.vmx["numvcpus"] = CONF["cpus"]
   end
 
-  config.vm.provision :shell, :path => "scripts/install-ansible.sh", :args => "/var/www"
-  config.vm.provision :shell, :path => "scripts/run-ansible.sh", :args => "/var/www"
-
+  config.vm.provision :shell, :path => "vagrant/scripts/install-ansible.sh", :args => File.join(CONF["synced_folder"], "vagrant")
+  config.vm.provision :shell, :path => "vagrant/scripts/run-ansible.sh", :args => File.join(CONF["synced_folder"], "vagrant")
 end

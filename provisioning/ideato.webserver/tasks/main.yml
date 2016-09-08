@@ -1,5 +1,0 @@
----
-- include: dev.yml
-  when: target == "development"
-- include: prod.yml
-  when: target == "production" or target == "staging"

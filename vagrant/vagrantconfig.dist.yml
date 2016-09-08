@@ -1,0 +1,8 @@
+ram:           2048
+cpus:          2
+ipaddress:     10.10.10.10
+name:          ideato-vagrant-box
+synced_folder: "/var/www"
+hosts:
+  - ideato-vagrant-box.dev
+  - ideato-vagrant-box.local

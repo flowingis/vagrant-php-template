@@ -52,3 +52,5 @@ alias rm='rm -i'
 alias mv='mv -iv'
 alias grep='grep --color=auto -in'
 alias ..='cd ..'
+
+cd /var/www/ledcom-mqtt-client

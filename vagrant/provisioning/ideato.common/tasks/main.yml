@@ -6,9 +6,13 @@
     - dot/.git-*
     - dot/.bash*
 
+- name: enables bash colors
+  lineinfile: dest=/home/vagrant/.bashrc regexp=/#force_color_prompt=yes/ line=force_color_prompt=yes
+
 - name: install common package
-  apt: name={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
     - git
     - curl
+    - zsh
     - vim
