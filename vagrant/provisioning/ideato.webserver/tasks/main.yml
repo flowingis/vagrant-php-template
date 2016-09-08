@@ -1,0 +1,114 @@
+---
+
+#Nginx
+- name: Install Nginx
+  become: true
+  yum: name=nginx state=latest
+
+- name: Change default nginx site
+  become: true
+  template: src={{ ws_template }} dest={{ ws_vhost_path }}/{{ ws_vhost_file }}
+  notify: restart nginx
+
+- lineinfile: dest=/etc/nginx/nginx.conf regexp='^user www-data;$' line='user vagrant;' backrefs=yes
+
+- name: Add repository 'remi-repo'
+  command: rpm -ih http://rpms.famillecollet.com/enterprise/remi-release-7.rpm creates=/etc/yum.repos.d/remi.repo
+
+- name: install php70
+  yum: name={{ item }} enablerepo=epel,remi,remi-php70 state=installed
+  with_items:
+    - php
+    - php-mcrypt
+    - php-mbstring
+    - php-fpm
+    - php-gd
+    - php-xml
+    - php-pdo
+    - php-intl
+    - php-xmlrpc
+
+- file: path=/var/log/php-fpm state=directory mode=0777 owner=vagrant group=vagrant
+
+- file: path=/var/log/php-fpm/error.log state=touch mode=0777 owner=vagrant group=vagrant
+
+- file: path=/etc/php.d/custom.ini state=touch
+
+##config php-fpm
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+           regexp='^user = www-data'
+           line='user = vagrant'
+           backrefs=yes
+
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+           regexp='^group = www-data'
+           line='group = vagrant'
+           backrefs=yes
+
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+           regexp='^listen = 127.0.0.1:9000'
+           line='listen = /var/run/php-fpm/php-fpm.sock'
+           backrefs=yes
+
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+           regexp='^listen.owner = www-data'
+           line='listen.owner = vagrant'
+           backrefs=yes
+
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+           regexp='^listen.group = www-data'
+           line='listen.group = vagrant'
+           backrefs=yes
+
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+              line='listen.mode = 0666'
+
+#config php
+- ini_file: dest=/etc/php.d/custom.ini
+            section=Date
+            option=date.timezone
+            value=Europe/Rome
+            backup=yes
+
+- ini_file: dest=/etc/php.d/custom.ini
+            section=ErrorLog
+            option=error_log
+            value=/var/log/php/error.log
+            backup=yes
+
+- ini_file: dest=/etc/php.d/custom.ini
+            section=PHP
+            option=display_errors
+            value=On
+            backup=yes
+
+- name: restart php-fpm
+  shell: service php-fpm restart
+  become: true
+
+- name: restart nginx
+  service: name=nginx enabled=yes state=restarted
+
+- name: Install composer
+  shell: chdir=/tmp creates=/tmp/composer.phar curl -sS https://getcomposer.org/installer | php
+
+- name: Copy composer to bin dir
+  shell: chdir=/tmp creates=/usr/bin/composer mv composer.phar /usr/bin/composer
+
+- name: Make composer executable
+  file: path=/usr/bin/composer owner=vagrant group=vagrant mode="0777"
+
+- name: config swap for composer (https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors)
+  shell: /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+  ignore_errors: True
+
+- name: config swap for composer (https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors)
+  shell: /sbin/mkswap /var/swap.1
+  ignore_errors: True
+
+- name: config swap for composer (https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors)
+  shell: /sbin/swapon /var/swap.1
+  ignore_errors: True
+
+- name: Create .composer dir if it does not exist
+  file: path=/home/vagrant/.composer state=directory

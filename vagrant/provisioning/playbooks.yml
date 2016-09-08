@@ -7,7 +7,7 @@
 
   roles:
     - ideato.common
-    # - ideato.webserver
+    - ideato.webserver
     # - ideato.database.mysql
 
-  sudo: True
+  become: True
