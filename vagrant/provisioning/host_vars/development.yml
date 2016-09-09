@@ -4,5 +4,5 @@
 #encrypt with Ansible-Vault http://docs.ansible.com/ansible/playbooks_vault.html
 ---
 
-backend_server_name_virtual_host: ideato-vagrant-box.dev
-backend_application_root_dir: /var/www
+backend_server_name_virtual_host: "{{ host }}"
+backend_application_root_dir: "{{ synced_folder }}"

@@ -37,5 +37,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision :shell, :path => "vagrant/scripts/install-ansible.sh", :args => File.join(CONF["synced_folder"], "vagrant")
-  config.vm.provision :shell, :path => "vagrant/scripts/run-ansible.sh", :args => File.join(CONF["synced_folder"], "vagrant")
+  config.vm.provision :shell, :path => "vagrant/scripts/run-ansible.sh", :args => [
+    CONF["synced_folder"],
+    CONF["hosts"].first,
+  ]
 end
