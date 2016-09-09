@@ -15,6 +15,6 @@
   roles:
     - ideato.common
     - ideato.webserver
-    # - ideato.database.mysql
+    - ideato.database.mysql
 
   become: True

@@ -1,0 +1,11 @@
+---
+mysql_user: ideato
+mysql_password: ideato
+mysql_db: ideato
+mysql_root_password: root
+
+mysql_packages:
+  - Percona-Server-server-56
+  - python-pip
+  - python-devel
+  - mysql-devel

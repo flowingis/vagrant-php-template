@@ -25,3 +25,8 @@
     - curl
     - zsh
     - vim
+    - gcc
+    - zlib
+    - zlib-devel
+    - zlib-static
+    - openssl-devel
