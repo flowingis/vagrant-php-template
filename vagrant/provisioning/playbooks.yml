@@ -16,5 +16,6 @@
     - ideato.common
     - ideato.webserver
     - ideato.database.mysql
+    - ideato.nodejs
 
   become: True
