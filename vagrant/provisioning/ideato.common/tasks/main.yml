@@ -9,6 +9,15 @@
 - name: enables bash colors
   lineinfile: dest=/home/vagrant/.bashrc regexp=/#force_color_prompt=yes/ line=force_color_prompt=yes
 
+- name: copy all dotfiles to vagrant home
+  copy: src={{ item }} dest=/root/
+  with_fileglob:
+    - dot/.git-*
+    - dot/.bash*
+
+- name: enables bash colors
+  lineinfile: dest=/root/.bashrc regexp=/#force_color_prompt=yes/ line=force_color_prompt=yes
+
 - name: install common package
   yum: name={{ item }} state=present
   with_items:
