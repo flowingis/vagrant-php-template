@@ -1,7 +1,10 @@
 ---
-- hosts: development #you can choose any hosts gruop name|all|ip|patterns
+- hosts: development
 
   user: vagrant
+
+  vars_files:
+    - host_vars/development.yml
 
   gather_facts: yes
 
