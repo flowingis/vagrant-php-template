@@ -17,16 +17,7 @@
 
 - name: install php70
   yum: name={{ item }} enablerepo=epel,remi,remi-php70 state=installed
-  with_items:
-    - php
-    - php-mcrypt
-    - php-mbstring
-    - php-fpm
-    - php-gd
-    - php-xml
-    - php-pdo
-    - php-intl
-    - php-xmlrpc
+  with_items: "{{ php_packages }}"
 
 - file: path=/var/log/php-fpm state=directory mode=0777 owner=vagrant group=vagrant
 

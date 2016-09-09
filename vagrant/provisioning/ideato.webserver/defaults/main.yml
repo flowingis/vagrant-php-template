@@ -7,3 +7,14 @@ ws_template: default.tpl
 
 composer_auth_token: /home/vagrant/.composer/auth.json
 composer_auth_token_template: composer/auth.json.tpl
+
+php_packages:
+  - php
+  - php-mcrypt
+  - php-mbstring
+  - php-fpm
+  - php-gd
+  - php-xml
+  - php-pdo
+  - php-intl
+  - php-xmlrpc
