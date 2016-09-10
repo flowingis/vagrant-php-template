@@ -17,5 +17,6 @@
     - ideato.webserver
     - ideato.database.mysql
     - ideato.nodejs
+    - ideato.elasticsearch
 
   become: True

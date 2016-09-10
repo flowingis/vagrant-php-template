@@ -27,7 +27,7 @@ The configuration is CentOs based and it will install:
 
 ## Configuration
 
-The configuration automatically sets `synced_folder` and the first `host` you customized in `vagrantconfig.yml` as default _document root_ and _server name_ in nginx. In most of the projects this is a default set up, in this way you just need to update those values in a single file. 
+The configuration automatically sets `synced_folder` and the first `host` you customized in `vagrantconfig.yml` as default _document root_ and _server name_ in nginx. In most of the projects this is a default set up, in this way you just need to update those values in a single file.
 
 If you need to override one or more vars from `<ansible role>/defaults/main.yml` you just need to copy the var within the `vagrant/provisioning/host_vars/development.yml` and update with your value.
 
@@ -44,17 +44,17 @@ Suppose you customize your `vagrant/vagrantconfig.yml` as follow:
   		- my-project.dev
  		- api.my-project.dev
 
-Once you provision the machine, automatically hosts will be added on your `hosts` file. Head your browser to `http://my-project.dev` address in order to open your project. 
+Once you provision the machine, automatically hosts will be added on your `hosts` file. Head your browser to `http://my-project.dev` address in order to open your project.
 
 
 ##To Do
 
-### Main features 
+### Main features
 
 - [x] nginx + PHP 7
 - [x] MySQL
 - [x] node js
-- [ ] Elasticsearch
+- [x] Elasticsearch
 
 ### Bugs and improvements
 
