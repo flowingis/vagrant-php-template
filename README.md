@@ -58,6 +58,6 @@ Once you provision the machine, automatically hosts will be added on your `hosts
 
 ### Bugs and improvements
 
-- [ ] improve shell
+- [x] improve shell
 - [ ] check if all needed PHP libraries are provided
 - [ ] test with real project
