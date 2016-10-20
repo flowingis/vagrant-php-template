@@ -61,3 +61,10 @@ Once you provision the machine, automatically hosts will be added on your `hosts
 - [x] improve shell
 - [ ] check if all needed PHP libraries are provided
 - [ ] test with real project
+
+
+##In caso di malfunzionamento della vagrant 
+
+- ripulire il file /etc/hosts nell'host dalle referenze della vagrant
+- svuotare /etc/exports nell'host
+- eliminare dalla configurazione generale di Virtualbox tutti i vboxnetX (preferenze -> Rete -> Reti solo host) 
