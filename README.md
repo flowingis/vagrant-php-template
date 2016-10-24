@@ -66,6 +66,5 @@ Once you provision the machine, automatically hosts will be added on your `hosts
 ##In caso di malfunzionamento della vagrant 
 
 - utilizzare versioni aggiornate di virtualbox e vagrant
-- ripulire il file /etc/hosts nell'host dalle referenze della vagrant
 - svuotare /etc/exports nell'host
 - eliminare dalla configurazione generale di Virtualbox tutti i vboxnetX (preferenze -> Rete -> Reti solo host) 
