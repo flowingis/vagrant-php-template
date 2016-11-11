@@ -3,7 +3,7 @@
 # download and install java
 - name: assert java installed
   command: java -version
-  register: java_installed
+  register: java_not_installed
   ignore_errors: True
 
 - name: download java rpm
@@ -12,13 +12,13 @@
     dest: /home/vagrant
     headers: 'Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie'
     validate_certs: no
-  when: java_installed|failed
+  when: java_not_installed|failed
 
 - name: install java
   yum: name={{ item }} state=present
   with_items:
-    - jdk-8u73-linux-x64.rpm
-  when: java_installed|failed
+    - /home/vagrant/jdk-8u73-linux-x64.rpm
+  when: java_not_installed|failed
 
 - name: remove rpm package
   file: path=/home/vagrant/jdk-8u*-linux-x64.rpm state=absent
