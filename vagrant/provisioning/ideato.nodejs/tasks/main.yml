@@ -1,7 +1,7 @@
 ---
 
 - name: add nodejs ppa
-  shell: get_url -sL https://deb.nodesource.com/setup_{{ nodejs_version }} | sudo -E bash -
+  shell: get_url -sL https://rpm.nodesource.com/setup_{{ nodejs_version }} | sudo -E bash -
 
 - name: install nodejs
   yum: name={{ item }} state=latest
