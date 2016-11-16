@@ -2,6 +2,8 @@
 # vi: set ft=ruby :
 require 'yaml'
 
+Vagrant.require_version ">= 1.8.6"
+
 # Load up our vagrant config files -- vagrant/vagrantconfig.yml first
 _config = YAML.load(File.open(File.join(File.dirname(__FILE__), "vagrant/vagrantconfig.yml"), File::RDONLY).read)
 CONF = _config

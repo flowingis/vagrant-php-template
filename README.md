@@ -14,8 +14,8 @@ The configuration is CentOs based and it will install:
 
 ## Requirements
 
-* vagrant >= 1.6.3
-* virtual box >= 4.3.10
+* vagrant >= 1.8.6
+* virtual box >= 5.1.8
 
 ## Usage
 
@@ -63,8 +63,8 @@ Once you provision the machine, automatically hosts will be added on your `hosts
 - [ ] test with real project
 
 
-##In caso di malfunzionamento della vagrant 
+##In caso di malfunzionamento della vagrant
 
 - utilizzare versioni aggiornate di virtualbox e vagrant
 - svuotare /etc/exports nell'host
-- eliminare dalla configurazione generale di Virtualbox tutti i vboxnetX (preferenze -> Rete -> Reti solo host) 
+- eliminare dalla configurazione generale di Virtualbox tutti i vboxnetX (preferenze -> Rete -> Reti solo host)
