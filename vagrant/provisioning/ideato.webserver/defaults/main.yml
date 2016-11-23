@@ -20,3 +20,4 @@ php_packages:
   - php-xmlrpc
   - php-mysql
   - php-zip
+  - php-process
