@@ -73,6 +73,18 @@
             value=On
             backup=yes
 
+- ini_file: dest=/etc/php.d/custom.ini
+            section=PHP
+            option=realpath_cache_size
+            value=4096k
+            backup=yes
+
+- ini_file: dest=/etc/php.d/custom.ini
+            section=PHP
+            option=realpath_cache_ttl
+            value=7200
+            backup=yes
+
 - name: restart php-fpm
   shell: service php-fpm restart
   become: true
