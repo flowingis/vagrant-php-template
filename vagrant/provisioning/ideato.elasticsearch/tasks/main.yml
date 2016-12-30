@@ -28,11 +28,19 @@
   shell: rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch
   become: true
 
-- name: create a new yum repository file for elasticsearch
+- name: yum repository file for elasticsearch 2.x
   template:
-    src: elasticsearch.repo.tpl
+    src: elasticsearch-2.x.repo.tpl
     dest: /etc/yum.repos.d/elasticsearch.repo
   become: true
+  when: es_major_version == '2.x'
+
+- name: yum repository file for elasticsearch 5.x
+  template:
+    src: elasticsearch-5.x.repo.tpl
+    dest: /etc/yum.repos.d/elasticsearch.repo
+  become: true
+  when: es_major_version == '5.x'
 
 - name: install elasticsearch
   yum: name={{ item }} state=present
