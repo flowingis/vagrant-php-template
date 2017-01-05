@@ -1,0 +1,4 @@
+---
+composer:
+    path: /usr/local/bin/composer
+    home_path: '~/.composer'

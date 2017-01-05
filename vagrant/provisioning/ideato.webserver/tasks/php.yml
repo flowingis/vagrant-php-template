@@ -1,0 +1,40 @@
+---
+- name: Add ppa repository
+  sudo: yes
+  apt_repository: repo=ppa:ondrej/php
+
+- apt: pkg={{ item }} state=latest
+  name: install php packages
+  sudo: true
+  with_items:
+    - php5.6
+    - php5.6-cli
+    - php5.6-bz2
+    - php5.6-bcmath
+    - php5.6-common
+    - php5.6-curl
+    - php5.6-gd
+    - php5.6-imagick
+    - php5.6-intl
+    - php5.6-mbstring
+    - php5.6-mcrypt
+    - php5.6-memcached
+    - php5.6-mysql
+    - php5.6-readline
+    - php5.6-xmlrpc
+    - php5.6-xsl
+    - php5.6-zip
+    - php-pear
+
+- name: Set php.ini CLI
+  template: src=php.ini.cli.j2 dest=/etc/php/5.6/cli/php.ini
+  sudo: true
+
+- name: Set php.ini web
+  template: src=php.ini.web.j2 dest=/etc/php/5.6/apache2/php.ini
+  sudo: true
+  notify: restart apache
+
+- name: Set opcache.ini
+  template: src=opcache.ini.j2 dest=/etc/php/5.6/mods-available/opcache.ini
+  sudo: true

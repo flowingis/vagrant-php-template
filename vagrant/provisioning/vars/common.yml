@@ -1,0 +1,31 @@
+---
+apache:
+    docroot: /var/www/<project>/web
+    servername: local.<project>.it
+
+php:
+    web_memory_limit: 4096M
+    cli_memory_limit: 4096M
+    web_max_input_vars: 1000000000000000
+    cli_max_input_vars: 1000000000000000
+    web_max_execution_time: 120
+    cli_max_execution_time: 120
+    web_max_input_time: 60
+    cli_max_input_time: 60
+    web_post_max_size: 40M
+    cli_post_max_size: 40M
+    web_realpath_cache_size: 64000k
+    cli_realpath_cache_size: 64000k
+    web_realpath_cache_ttl: 7200
+    cli_realpath_cache_ttl: 7200
+    web_upload_max_filesize: 2M
+    cli_upload_max_filesize: 2M
+    web_max_file_uploads: 20
+    cli_max_file_uploads: 20
+    web_date_timezone: Europe/Rome
+    cli_date_timezone: Europe/Rome
+
+mysql:
+    user: <project>
+    password: <project>
+    db: <project>

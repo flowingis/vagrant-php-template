@@ -1,0 +1,10 @@
+### Vagrant template
+.vagrant
+vagrantconfig.yml
+
+### PHP Storm
+.idea
+
+### Other
+html/
+ideato/

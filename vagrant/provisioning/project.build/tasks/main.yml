@@ -1,0 +1,53 @@
+### node
+- name: install nodejs deps
+  apt: name={{ item }} state=present
+  with_items:
+    - python-software-properties
+
+- name: add nodejs 5.x ppa
+  shell: curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+
+- name: Update apt
+  apt: update_cache=yes
+
+- name: install nodejs
+  apt: name={{ item }} state=latest
+  with_items:
+    - nodejs
+
+- name: Update NODE_PATH
+  lineinfile: dest=/home/vagrant/.bashrc line='export NODE_PATH="$NODE_PATH:./node_modules"'
+  sudo_user: vagrant
+
+- name: Update npm version
+  shell: npm install npm -g
+
+### composer
+- name: Check if Composer is installed.
+  stat: "path={{ composer.path }}"
+  register: composer_bin
+
+- name: Download Composer installer.
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/composer-installer.php
+    mode: 0755
+  when: not composer_bin.stat.exists
+
+- name: Run Composer installer.
+  command: >
+    php composer-installer.php
+    chdir=/tmp
+  when: not composer_bin.stat.exists
+
+- name: Move Composer into globally-accessible location.
+  shell: >
+    mv /tmp/composer.phar {{ composer.path }}
+    creates={{ composer.path }}
+  when: not composer_bin.stat.exists
+
+- name: Ensure composer directory exists.
+  file:
+    path: "{{ composer.home_path }}"
+    state: directory
+
