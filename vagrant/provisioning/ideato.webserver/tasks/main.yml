@@ -86,8 +86,7 @@
             backup=yes
 
 - name: restart php-fpm
-  shell: service php-fpm restart
-  become: true
+  service: name=php-fpm enabled=yes state=restarted
 
 - name: restart nginx
   service: name=nginx enabled=yes state=restarted
