@@ -13,7 +13,7 @@
 - lineinfile: dest=/etc/nginx/nginx.conf regexp='^user nginx;$' line='user vagrant;' backrefs=yes
 
 - name: Add repository 'remi-repo'
-  command: rpm -ih http://rpms.famillecollet.com/enterprise/remi-release-7.rpm creates=/etc/yum.repos.d/remi.repo
+  command: rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm creates=/etc/yum.repos.d/remi.repo
 
 - name: install php70
   yum: name={{ item }} enablerepo=epel,remi,remi-php70 state=installed
@@ -86,8 +86,7 @@
             backup=yes
 
 - name: restart php-fpm
-  shell: service php-fpm restart
-  become: true
+  service: name=php-fpm enabled=yes state=restarted
 
 - name: restart nginx
   service: name=nginx enabled=yes state=restarted
