@@ -16,3 +16,4 @@
     - zlib-devel
     - zlib-static
     - openssl-devel
+    - ntp
