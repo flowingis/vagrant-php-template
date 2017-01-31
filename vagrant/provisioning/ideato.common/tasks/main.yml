@@ -17,3 +17,7 @@
     - zlib-static
     - openssl-devel
     - ntp
+
+- name: restart ntpd
+  service: name=ntpd enabled=yes state=restarted
+
