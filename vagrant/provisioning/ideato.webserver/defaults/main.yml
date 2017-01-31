@@ -5,9 +5,6 @@ ws_vhost_path: /etc/nginx/conf.d
 ws_vhost_file: default.conf
 ws_template: default.tpl
 
-composer_auth_token: /home/vagrant/.composer/auth.json
-composer_auth_token_template: composer/auth.json.tpl
-
 php_packages:
   - php
   - php-mcrypt

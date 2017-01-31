@@ -91,15 +91,6 @@
 - name: restart nginx
   service: name=nginx enabled=yes state=restarted
 
-- name: Install composer
-  shell: chdir=/tmp creates=/tmp/composer.phar curl -sS https://getcomposer.org/installer | php
-
-- name: Copy composer to bin dir
-  shell: chdir=/tmp creates=/usr/bin/composer mv composer.phar /usr/bin/composer
-
-- name: Make composer executable
-  file: path=/usr/bin/composer owner=vagrant group=vagrant mode="0777"
-
 - name: config swap for composer (https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors)
   shell: /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
   ignore_errors: True
