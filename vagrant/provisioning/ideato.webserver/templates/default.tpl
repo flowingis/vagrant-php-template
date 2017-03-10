@@ -11,9 +11,9 @@ server {
     error_log /var/log/nginx/error-{{ backend_server_name_virtual_host }}.log;
     access_log /var/log/nginx/access-{{ backend_server_name_virtual_host }}.log;
 
-    add_header 'Access-Control-Allow-Origin' '*';
-    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
-    add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Auth-Token,Authorization';
+    add_header 'Access-Control-Allow-Origin' '*' always;
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE' always;
+    add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Auth-Token,Authorization' always;
     add_header 'Access-Control-Allow-Credentials' 'true';
 
     location @rewriteapp {
