@@ -1,5 +1,5 @@
 ---
-- hosts: development
+- hosts: all
 
   user: vagrant
 
@@ -8,7 +8,7 @@
     - host: "{{ host }}"
 
   vars_files:
-    - host_vars/development.yml
+    - "env/{{ env }}/all.yml"
 
   gather_facts: yes
 

@@ -1,0 +1,7 @@
+#This template can be used for override default values
+
+#Be carefull don't commit this with plain credentials, add to .gitignore or
+#encrypt with Ansible-Vault http://docs.ansible.com/ansible/playbooks_vault.html
+
+backend_server_name_virtual_host: "{{ host }}"
+backend_application_root_dir: "{{ synced_folder }}"
