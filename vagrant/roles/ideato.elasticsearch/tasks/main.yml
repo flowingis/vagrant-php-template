@@ -1,0 +1,8 @@
+
+- include: common.yml
+- include: dev.yml
+  when: env == "dev"
+- include: stage.yml
+  when: env == "stage"
+- include: prod.yml
+  when: env == "prod"

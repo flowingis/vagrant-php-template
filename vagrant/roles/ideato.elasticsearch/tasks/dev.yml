@@ -1,0 +1,57 @@
+---
+
+# download and install java
+- name: assert java installed
+  command: java -version
+  register: java_not_installed
+  ignore_errors: True
+
+- name: download java rpm
+  get_url:
+    url: http://download.oracle.com/otn-pub/java/jdk/8u73-b02/jdk-8u73-linux-x64.rpm
+    dest: /home/vagrant
+    headers: 'Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie'
+    validate_certs: no
+  when: java_not_installed|failed
+
+- name: install java
+  yum: name={{ item }} state=present
+  with_items:
+    - /home/vagrant/jdk-8u73-linux-x64.rpm
+  when: java_not_installed|failed
+
+- name: remove rpm package
+  file: path=/home/vagrant/jdk-8u*-linux-x64.rpm state=absent
+
+# install elasticsearch
+- name: import the elasticsearch public GPG key
+  shell: rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch
+  become: true
+
+- name: yum repository file for elasticsearch 2.x
+  template:
+    src: elasticsearch-2.x.repo.tpl
+    dest: /etc/yum.repos.d/elasticsearch.repo
+  become: true
+  when: es_major_version == '2.x'
+
+- name: yum repository file for elasticsearch 5.x
+  template:
+    src: elasticsearch-5.x.repo.tpl
+    dest: /etc/yum.repos.d/elasticsearch.repo
+  become: true
+  when: es_major_version == '5.x'
+
+- name: install elasticsearch
+  yum: name={{ item }} state=present
+  with_items:
+    - elasticsearch
+
+- name: copy elasticsearch configuration
+  template: src=elasticsearch.yml.tpl dest=/etc/elasticsearch/elasticsearch.yml
+  become: true
+
+- name: ensure elasticsearch is running
+  service:
+    name: elasticsearch
+    state: started

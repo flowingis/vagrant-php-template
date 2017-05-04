@@ -1,0 +1,104 @@
+---
+
+#Nginx
+- name: Install Nginx
+  become: true
+  yum: name=nginx state=latest
+
+- name: Change default nginx site
+  become: true
+  template: src={{ ws_template }} dest={{ ws_vhost_path }}/{{ ws_vhost_file }}
+  notify: restart nginx
+
+- lineinfile: dest=/etc/nginx/nginx.conf regexp='^user nginx;$' line='user vagrant;' backrefs=yes
+
+- name: Add repository 'remi-repo'
+  command: rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm creates=/etc/yum.repos.d/remi.repo
+
+- name: install php70
+  yum: name={{ item }} enablerepo=epel,remi,remi-php70 state=installed
+  with_items: "{{ php_packages }}"
+
+- file: path=/var/log/php-fpm state=directory mode=0777 owner=vagrant group=vagrant
+
+- file: path=/var/log/php-fpm/error.log state=touch mode=0777 owner=vagrant group=vagrant
+
+- file: path=/etc/php.d/custom.ini state=touch
+
+##config php-fpm
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+           regexp='^user = apache'
+           line='user = vagrant'
+           backrefs=yes
+
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+           regexp='^group = apache'
+           line='group = vagrant'
+           backrefs=yes
+
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+           regexp='^listen = 127.0.0.1:9000'
+           line='listen = /var/run/php-fpm/php-fpm.sock'
+           backrefs=yes
+
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+           regexp='^listen.owner = apache'
+           line='listen.owner = vagrant'
+           backrefs=yes
+
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+           regexp='^listen.group = apache'
+           line='listen.group = vagrant'
+           backrefs=yes
+
+- lineinfile: dest=/etc/php-fpm.d/www.conf
+              line='listen.mode = 0666'
+
+#config php
+- ini_file: dest=/etc/php.d/custom.ini
+            section=Date
+            option=date.timezone
+            value=Europe/Rome
+            backup=yes
+
+- ini_file: dest=/etc/php.d/custom.ini
+            section=ErrorLog
+            option=error_log
+            value=/var/log/php/error.log
+            backup=yes
+
+- ini_file: dest=/etc/php.d/custom.ini
+            section=PHP
+            option=display_errors
+            value=On
+            backup=yes
+
+- ini_file: dest=/etc/php.d/custom.ini
+            section=PHP
+            option=realpath_cache_size
+            value=4096k
+            backup=yes
+
+- ini_file: dest=/etc/php.d/custom.ini
+            section=PHP
+            option=realpath_cache_ttl
+            value=7200
+            backup=yes
+
+- name: restart php-fpm
+  service: name=php-fpm enabled=yes state=restarted
+
+- name: restart nginx
+  service: name=nginx enabled=yes state=restarted
+
+- name: config swap for composer (https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors)
+  shell: /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+  ignore_errors: True
+
+- name: config swap for composer (https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors)
+  shell: /sbin/mkswap /var/swap.1
+  ignore_errors: True
+
+- name: config swap for composer (https://getcomposer.org/doc/articles/troubleshooting.md#proc-open-fork-failed-errors)
+  shell: /sbin/swapon /var/swap.1
+  ignore_errors: True

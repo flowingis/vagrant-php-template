@@ -1,0 +1,17 @@
+---
+
+- name: add nodejs repo
+  shell: curl -sL https://rpm.nodesource.com/setup_{{ nodejs_version }} | sudo -E bash -
+
+- name: install nodejs
+  yum: name={{ item }} state=latest
+  with_items:
+    - nodejs
+
+- name: Update NODE_PATH
+  lineinfile: dest=/home/vagrant/.bashrc line='export NODE_PATH="$NODE_PATH:./node_modules"'
+  become_user: vagrant
+
+- name: Update npm version
+  shell: npm install npm -g
+  become: true

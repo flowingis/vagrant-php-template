@@ -1,0 +1,20 @@
+backend_server_name_virtual_host: ideato-vagrant-box.dev
+backend_application_root_dir: /var/www
+
+ws_vhost_path: /etc/nginx/conf.d
+ws_vhost_file: default.conf
+ws_template: default.tpl
+
+php_packages:
+  - php
+  - php-mcrypt
+  - php-mbstring
+  - php-fpm
+  - php-gd
+  - php-xml
+  - php-pdo
+  - php-intl
+  - php-xmlrpc
+  - php-mysql
+  - php-zip
+  - php-process

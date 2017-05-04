@@ -1,0 +1,68 @@
+---
+- name: Add repos
+  yum: name={{ item }} state=present
+  with_items:
+   - http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm
+  become: true
+
+- name: MySQL | package requirements for CentOS
+  yum: name={{ item }} state=present update_cache=yes
+  with_items: "{{ mysql_packages }}"
+
+- name: Install Ansible prerequire for mysql
+  pip: name=MySQL-python
+
+- name: MySQL | Ensure MySQL is running
+  service:
+    name: mysql
+    state: started
+
+- name: MySQL | Set the root password.
+  mysql_user:
+    user: root
+    host: "{{ item }}"
+    password: "{{ mysql_root_password }}"
+    check_implicit_admin: yes
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  with_items:
+   - "{{ host }}"
+   - 127.0.0.1
+   - ::1
+   - localhost
+
+- name: MySQL | Remove the MySQL test database
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: create mysql databases
+  mysql_db:
+    name: "{{ item }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  with_items:
+    - "{{ mysql_db }}"
+
+- name: MySQL | Configure MySql for easy access as root user
+  template:
+    src: root_my.cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: 0600
+
+- name: add mysql user
+  mysql_user:
+    name: "{{ mysql_user }}"
+    host: "{{ item }}"
+    password: "{{ mysql_password }}"
+    priv: "{{ mysql_db }}.*:ALL"
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost

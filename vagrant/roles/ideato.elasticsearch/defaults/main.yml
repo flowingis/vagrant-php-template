@@ -1,0 +1,4 @@
+---
+
+# choose between 2.x, 5.x
+es_major_version: "5.x"
