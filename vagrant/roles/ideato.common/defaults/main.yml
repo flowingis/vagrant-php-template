@@ -1,0 +1,20 @@
+
+common_pkgs:
+  - git
+  - curl
+  - vim
+  - ntp
+  - htop
+  - lsof
+  - python-pip
+  - ntp
+  - sysstat
+  - wget
+  - bind-utils
+  - dstat
+  - libselinux-python #required for managing selinux. Module Selinux ansible
+  - rsync
+  - mlocate
+  - gzip
+  - tar
+  - unzip

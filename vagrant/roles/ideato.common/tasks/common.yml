@@ -1,0 +1,33 @@
+
+- name: install common packages
+  yum:
+    name: "{{ item }}"
+  with_items: "{{ common_pkgs }}"
+
+- name: Copy sysctl configuration
+  template: src=sysctl.conf.j2 dest=/etc/sysctl.d/101-optimize.conf
+  notify: apply sysctl
+
+- name: Set the correct timezone
+  file:
+    src: /usr/share/zoneinfo/Europe/Rome
+    dest: /etc/localtime
+    state: link
+    force: yes
+
+- name: Disable selinux
+  selinux:
+   state: disabled
+  register: selinux
+
+- name: Ensure NTP is running and enabled as configured
+  service:
+    name: ntpd
+    state: started
+    enabled: yes
+
+- name: Ensure Sysstat is running and enabled as configured
+  service:
+    name: sysstat
+    state: started
+    enabled: yes
