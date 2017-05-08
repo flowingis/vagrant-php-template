@@ -1,8 +1,19 @@
 #This template can be used for override default values
 
-#Be carefull don't commit this with plain credentials, add to .gitignore or
-#encrypt with Ansible-Vault http://docs.ansible.com/ansible/playbooks_vault.html
-
-backend_server_name_virtual_host: "{{ host }}"
-backend_application_root_dir: "{{ synced_folder }}"
 user: vagrant
+
+# Nginx
+backend_server_name_virtual_host: "{{ host }}"
+backend_application_root_dir: /var/www
+
+# NodeJS
+nodejs_version: "7.x"
+
+# Mysql
+mysql_user: ideato
+mysql_password: ideato
+mysql_db: ideato
+mysql_root_password: root
+
+# Elasticsearch
+es_major_version: "5.x"
