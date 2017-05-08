@@ -16,14 +16,7 @@ server {
     add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Auth-Token,Authorization' always;
     add_header 'Access-Control-Allow-Credentials' 'true';
 
-    location @rewriteapp {
-        # riscrittura di tutto su app.php
-        rewrite ^(.*)$ /app_dev.php/$1 last;
-    }
-
     location / {
-     try_files $uri @rewriteapp;
-
      if ($request_method = OPTIONS ) {
        return 204;
      }
@@ -36,7 +29,7 @@ server {
         root /usr/share/nginx/html;
     }
 
-    location ~ ^/(app|app_dev|app_test)\.php(/|$) {
+    location ~ ^/(app|app_dev|app_test|index)\.php(/|$) {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
         fastcgi_index index.php;
