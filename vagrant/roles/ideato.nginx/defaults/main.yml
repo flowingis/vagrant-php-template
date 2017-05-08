@@ -1,6 +1,3 @@
-backend_server_name_virtual_host: ideato-vagrant-box.dev
-backend_application_root_dir: /var/www
-
 ws_vhost_path: /etc/nginx/conf.d
 ws_vhost_file: default.conf
 ws_template: default.tpl
