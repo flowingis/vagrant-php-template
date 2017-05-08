@@ -1,6 +1,8 @@
 ### Vagrant template
 .vagrant
 vagrantconfig.yml
+vagrant/env/stage/all.yml
+vagrant/env/prod/all.yml
 
 ### PHP Storm
 .idea

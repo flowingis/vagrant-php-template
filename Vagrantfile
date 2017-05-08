@@ -27,7 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.hostsupdater.aliases = CONF['hosts']
 
   config.vm.synced_folder "./", CONF["synced_folder"], type: "nfs", mount_options: ['rw', 'nolock', 'vers=3', 'tcp', 'fsc', 'actimeo=2']
-  config.vm.synced_folder ".", "/vagrant", type: "nfs", mount_options: ['rw', 'nolock', 'vers=3', 'tcp', 'fsc', 'actimeo=2']
+  #config.vm.synced_folder ".", "/vagrant", type: "nfs", mount_options: ['rw', 'nolock', 'vers=3', 'tcp', 'fsc', 'actimeo=2']
 
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", CONF["ram"]]
