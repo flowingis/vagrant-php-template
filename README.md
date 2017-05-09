@@ -8,9 +8,8 @@ The configuration is CentOs based and it will install:
 * PHP 7
 * MySQL 5.6
 * nginx 1.10
-* node 6.x
-* Composer (latest)
-* elasticsearch 2.x
+* node default installation 7.x
+* elasticsearch default installation 5.x 
 
 ## Requirements
 
@@ -21,50 +20,46 @@ The configuration is CentOs based and it will install:
 
 1. Duplicate the file `vagrant/vagrantconfig.dist.yml` into `vagrant/vagrantconfig.yml`.
 2. Customize values into `vagrant/vagrantconfig.yml` to your needs.
-3. Add your own custom configuration of vars within `vagrant/provisioning/host_vars/development.yml`. See [Configuration](#configuration) section for more info.
+3. Add your own custom configuration of vars within `vagrant/env/dev/all.yml`. See [Configuration](#configuration) section for more info.
 4. Run `vagrant up`.
 
 
 ## Configuration
 
-The configuration automatically sets `synced_folder` and the first `host` you customized in `vagrantconfig.yml` as default _document root_ and _server name_ in nginx. In most of the projects this is a default set up, in this way you just need to update those values in a single file.
+The configuration automatically sets the first `host` you customized in `vagrantconfig.yml` as default _server name_ in nginx.
+In most of the projects this is a default set up, in this way you just need to update those values in a single file.
 
-If you need to override one or more vars from `<ansible role>/defaults/main.yml` you just need to copy the var within the `vagrant/provisioning/host_vars/development.yml` and update with your value.
+If you need to override one or more vars, you have to edit `vagrant/env/dev/all.yml` and update with your value.
 
 ### Example
 
-Suppose you customize your `vagrant/vagrantconfig.yml` as follow:
+Suppose you customize your `vagrant/env/dev/all.yml` as follow:
+
+	user: vagrant
+	backend_server_name_virtual_host: "{{ host }}"
+	backend_application_root_dir: /var/www/web
+	nodejs_version: "7.x"
+	mysql_user: ideato
+	mysql_password: ideato
+	mysql_db: ideato
+	mysql_root_password: root
+	es_major_version: "5.x"
+
+and you customize your `vagrant/vagrantconfig.yml` as follow:
 
 	ram:           2048
 	cpus:          2
 	ipaddress:     10.10.10.10
 	name:          my-project-box
-	synced_folder: "/var/www/my-project"
+	synced_folder: "/var/www"
 	hosts:
   		- my-project.dev
  		- api.my-project.dev
 
-Once you provision the machine, automatically hosts will be added on your `hosts` file. Head your browser to `http://my-project.dev` address in order to open your project.
+Once you provision the machine, automatically hosts will be added on your `hosts` file. Head your browser to `http://my-project.dev` address in order to open your project with `/var/www/web` as document root
 
+## Known issue
 
-##To Do
-
-### Main features
-
-- [x] nginx + PHP 7
-- [x] MySQL
-- [x] node js
-- [x] Elasticsearch
-
-### Bugs and improvements
-
-- [x] improve shell
-- [ ] check if all needed PHP libraries are provided
-- [ ] test with real project
-
-
-##In caso di malfunzionamento della vagrant
-
-- utilizzare versioni aggiornate di virtualbox e vagrant
-- svuotare /etc/exports nell'host
-- eliminare dalla configurazione generale di Virtualbox tutti i vboxnetX (preferenze -> Rete -> Reti solo host)
+If you have trouble with the ssh connection after vagrant please run:
+- rm -f /etc/exports
+- Open VirtualBox, go to Preferenze -> Rete -> Reti solo host and removed vboxnet* 
