@@ -27,7 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.hostsupdater.aliases = CONF['hosts']
 
   config.vm.synced_folder "./", CONF["synced_folder"], type: "nfs", mount_options: ['rw', 'nolock', 'vers=3', 'tcp', 'fsc', 'actimeo=2']
-  config.vm.synced_folder ".", "/vagrant", type: "nfs", mount_options: ['rw', 'nolock', 'vers=3', 'tcp', 'fsc', 'actimeo=2']
+  #config.vm.synced_folder ".", "/vagrant", type: "nfs", mount_options: ['rw', 'nolock', 'vers=3', 'tcp', 'fsc', 'actimeo=2']
 
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", CONF["ram"]]
@@ -39,9 +39,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.vmx["numvcpus"] = CONF["cpus"]
   end
 
-  config.vm.provision :shell, :path => "vagrant/scripts/install-ansible.sh", :args => File.join(CONF["synced_folder"], "vagrant")
-  config.vm.provision :shell, :path => "vagrant/scripts/run-ansible.sh", :args => [
-    CONF["synced_folder"],
-    CONF["hosts"].first,
-  ]
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.install = "1"
+    ansible.verbose = "false"
+    ansible.playbook = "vagrant/playbooks.yml"
+    ansible.extra_vars = {
+      synced_folder: CONF["synced_folder"],
+      host: CONF["hosts"].first,
+      env: "dev"
+      }
+  end
+
 end

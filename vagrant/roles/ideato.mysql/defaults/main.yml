@@ -1,0 +1,7 @@
+---
+
+mysql_packages:
+  - Percona-Server-server-56
+  - python-pip
+  - python-devel
+  - mysql-devel

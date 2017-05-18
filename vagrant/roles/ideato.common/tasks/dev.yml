@@ -1,0 +1,25 @@
+---
+
+- name: install dev packages
+  yum: name={{ item }} state=present
+  with_items:
+    - gcc
+    - zlib
+    - zlib-devel
+    - zlib-static
+    - openssl-devel
+    - cachefilesd
+
+- name: copy all dotfiles to vagrant home
+  copy: src={{ item }} dest=/home/vagrant/
+  with_fileglob:
+    - dot/.bash*
+
+- name: cachefilesd
+  shell: echo "RUN=yes" > ssh
+
+- name: cachefilesd start service
+  service: name=cachefilesd enabled=yes state=restarted
+
+- name: restart ntpd
+  service: name=ntpd enabled=yes state=restarted

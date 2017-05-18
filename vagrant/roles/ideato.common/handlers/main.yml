@@ -1,0 +1,2 @@
+- name: apply sysctl
+  command: "sysctl -p /etc/sysctl.d/101-optimize.conf"
